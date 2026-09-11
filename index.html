@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>#_Mtto_Manual</title>
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest-manual.json">
   <meta name="theme-color" content="#22c55e">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" href="icon.png">
-  
+  <link rel="apple-touch-icon" href="icon-manual.png">
   <style>
+    /* ==================== VARIABLES Y ESTILOS BASE ==================== */
     :root{
       --bg:#0a0f0d; --card:#121a16; --card2:#1a2420; --line:#243029;
       --text:#e8f0eb; --sub:#8aa398; --accent:#22c55e; --good:#4ade80;
@@ -17,11 +17,19 @@
     }
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
     body{margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding-bottom:40px;}
+
+    /* ==================== PANTALLAS ==================== */
     .screen{display:none; padding:16px; max-width:480px; margin:0 auto; min-height:100vh;}
     .screen.active{display:block;}
+
+    /* ==================== TIPOGRAFÍA ==================== */
     h1{font-size:20px; margin:0 0 4px;}
     h2{font-size:14px; color:var(--sub); margin:0 0 20px; font-weight:500;}
+
+    /* ==================== TARJETAS ==================== */
     .card{background:var(--card); border-radius:var(--radius); padding:16px; margin-bottom:14px; border:1px solid var(--line);}
+
+    /* ==================== FORMULARIOS ==================== */
     label{display:block; font-size:14px; color:var(--sub); margin:16px 0 8px; font-weight:600;}
     label:first-child{margin-top:0;}
     input[type=text], input[type=number], input[type=time], select, textarea{
@@ -30,18 +38,26 @@
     }
     input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent);}
     .hint{font-size:12px; color:var(--sub); margin-top:4px;}
+
+    /* ==================== BOTONES ==================== */
     .btn{width:100%; padding:18px; border-radius:12px; font-size:18px; font-weight:700; background:var(--accent); color:#fff; margin-top:20px; border:none; cursor:pointer; font-family:inherit;}
     .btn:disabled{opacity:.35; cursor:not-allowed;}
     .btn.secondary{background:var(--card2); color:var(--text); border:1px solid var(--line);}
     .btn.small{padding:10px 14px; font-size:14px; margin-top:8px;}
+
+    /* ==================== TOGGLES Y CHIPS ==================== */
     .toggle2{display:flex; gap:10px; margin-top:6px;}
     .toggle2 button{flex:1; padding:16px; border-radius:12px; background:var(--card2); color:var(--text); border:1px solid var(--line); font-size:16px; font-weight:600; cursor:pointer;}
     .toggle2 button.sel{background:var(--accent); border-color:var(--accent); color:#fff;}
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;}
     .chip{padding:10px 14px; border-radius:20px; background:var(--card2); border:1px solid var(--line); color:var(--text); font-size:14px; font-weight:500; cursor:pointer;}
     .chip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+
+    /* ==================== SECCIONES ==================== */
     .section-label{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--sub); margin:20px 0 10px;}
     .grid-actions{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+
+    /* ==================== DASHBOARD ==================== */
     .top-icons{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
     .icon-btn{background:none; border:none; font-size:24px; cursor:pointer; padding:4px; opacity:0.7;}
     .info-discreta{text-align:right; font-size:12px; color:var(--sub);}
@@ -51,15 +67,21 @@
     .action-btn .ic{font-size:24px;}
     .tramo-open{background:var(--card2);border:1px solid var(--accent);border-radius:12px;padding:14px;margin-bottom:10px;}
     .close-tramo-btn{margin-top:12px;background:var(--bad);color:#fff;padding:12px;border-radius:10px;width:100%;font-weight:600;cursor:pointer;border:none;font-size:15px;}
+
+    /* ==================== MODALES ==================== */
     .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;align-items:flex-end;}
     .overlay.active{display:flex;}
     .modal{background:var(--card);width:100%;max-width:480px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px 16px 26px;max-height:88vh;overflow-y:auto;}
     .modal h3{margin:0 0 14px;font-size:18px;}
     .modal-close{float:right;background:none;color:var(--sub);font-size:24px;padding:0 4px;cursor:pointer;border:none;}
+
+    /* ==================== RESUMEN ==================== */
     .summary-line{display:flex;justify-content:space-between;font-size:15px;padding:8px 0;border-bottom:1px solid var(--line);}
     .legend-box{padding:14px;border-radius:10px;font-weight:600;font-size:14px;text-align:center;margin-top:10px;}
     .legend-good{background:#0d2b1a;color:var(--good);}
-    .obs-diagnostico{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-bottom:12px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);}
+    .justificar-box{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-top:10px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);animation:pulse-glow 1.5s ease-in-out infinite;}
+
+    /* ==================== UTILIDADES ==================== */
     .toast{position:fixed;bottom:16px;left:16px;right:16px;max-width:448px;margin:0 auto;background:var(--card2);border:1px solid var(--accent);padding:12px 14px;border-radius:10px;font-size:13px;display:none;z-index:60;}
     .toast.show{display:block;}
     .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;background:var(--accent);color:#fff;margin-left:6px;}
@@ -67,6 +89,10 @@
     .tramo-sin-cerrar{color:var(--bad);font-weight:700;}
     .clipboard-box{background:var(--card2);padding:12px;border-radius:8px;white-space:pre-wrap;font-family:monospace;font-size:13px;max-height:300px;overflow-y:auto;border:1px solid var(--line);}
     .offline-indicator{display:none;background:var(--bad);color:#fff;text-align:center;font-size:12px;padding:4px;border-radius:6px;margin-bottom:10px;}
+    .error-msg{color:var(--bad); font-size:12px; margin-top:4px; display:none;}
+    .error-msg.show{display:block;}
+
+    /* ==================== CIERRE DE TRAMO ==================== */
     .btn-si-apto{position:relative;overflow:hidden;transition:all 0.3s;padding:16px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-size:16px;font-weight:600;cursor:pointer;text-align:left;width:100%;}
     .btn-si-apto.activo{background:var(--accent);border-color:var(--accent);color:#fff;}
     .btn-si-apto input{display:none;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid #fff;background:rgba(255,255,255,0.9);color:#000;font-size:16px;}
@@ -75,20 +101,27 @@
     .btn-no-apto.activo{background:var(--bad);border-color:var(--bad);color:#fff;}
     .btn-no-apto input{display:none;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid #fff;background:rgba(255,255,255,0.9);color:#000;font-size:16px;}
     .btn-no-apto.activo input{display:block;}
+
+    /* ==================== ADVERTENCIA INSPECTOR ==================== */
     .advertencia{background:var(--bad);color:#fff;padding:12px;border-radius:8px;font-weight:700;text-align:center;margin-top:8px;display:none;}
     .advertencia.show{display:block;}
+
+    /* ==================== CAMPOS DESHABILITADOS ==================== */
     .disabled-field{opacity:0.4;pointer-events:none;}
+
+    /* ==================== TAPAS ==================== */
     .tapa-entry{border:1px dashed var(--line);border-radius:8px;padding:10px;margin:8px 0;background:var(--card2);}
     .tapa-entry .entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
     .tapa-entry .entry-remove{background:var(--bad);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;}
     .campo-grupo{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
     .campo-grupo label{font-size:12px;margin:0;min-width:50px;}
     .campo-grupo input,.campo-grupo select{flex:1;font-size:15px;padding:10px;}
+
+    /* ==================== CAJA OBSERVACIONES CON SUBCONJUNTOS ==================== */
     .obs-box{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;border:1px solid var(--line);}
+    .obs-diagnostico{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-bottom:12px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);}
     .obs-separador{border-top:1px dashed var(--line);margin:12px 0;}
     .obs-texto{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text);font-size:15px;min-height:80px;width:100%;font-family:inherit;}
-    .error-msg{color:var(--bad); font-size:12px; margin-top:4px; display:none;}
-    .error-msg.show{display:block;}
   </style>
 </head>
 <body>
@@ -118,28 +151,29 @@
   </div>
 </div>
 
-<!-- ==================== PANTALLA 2: DASHBOARD ==================== -->
+<!-- ==================== PANTALLA 2: DASHBOARD (OPERADOR) ==================== -->
 <div class="screen" id="screen-dashboard">
   <div class="top-icons">
     <button class="icon-btn" onclick="verBitacoraCompleta()">📋</button>
     <div class="info-discreta" id="info-tramos-ml">0 tramos · 0 ML</div>
   </div>
-  
+
   <div class="sync-status" id="sync-status">● Listo</div>
   <div class="offline-indicator" id="offline-indicator">📡 Sin conexión</div>
 
   <div id="tramo-abierto-box"></div>
 
+  <!-- Tramos múltiples (separados por coma) -->
   <div class="section-label">Tramos (separados por coma)</div>
   <div class="grid-actions" id="box-sin-tramo">
     <input type="text" id="nuevo-tramo-nombre" class="tramo-input-highlight" placeholder="Ej: 123, 456" style="grid-column:1/3;">
     <button class="btn" id="btn-abrir-tramo" style="grid-column:1/3;" disabled onclick="abrirTramo()">Abrir tramos</button>
   </div>
 
-  <div class="section-label">Novedades</div>
-  <div class="grid-actions">
+  <!-- Novedades: F. mayor y Requerimiento -->
+  <div class="grid-actions" style="margin-top:20px;">
     <button class="action-btn" onclick="registrarFuerzaMayor()"><span class="ic">🌧️</span>F. mayor</button>
-    <button class="action-btn" onclick="abrirModal('modal-requerimiento')"><span class="ic">⏸️</span>Requerim.</button>
+    <button class="action-btn" onclick="abrirModal('modal-requerimiento')"><span class="ic">⏸️</span>Requerimiento</button>
   </div>
 
   <button class="btn secondary" style="margin-top:24px;" onclick="preguntarVerificarActividades()">Cerrar jornada</button>
@@ -149,14 +183,16 @@
 <div class="screen" id="screen-inspector">
   <h1>Modo Inspector</h1>
   <h2 id="inspector-id">Z1|8/9/2026|D|ML</h2>
-  
+
+  <!-- Hora de inicio y horas totales (solo inspector) -->
   <div class="card">
     <label>Hora de inicio</label>
     <input type="time" id="insp-hora-inicio" value="">
     <label>Horas totales</label>
     <input type="number" id="insp-horas-totales" min="0" max="12" step="0.5" placeholder="7">
   </div>
-  
+
+  <!-- Personal primero -->
   <div class="card">
     <label>Personal</label>
     <select id="insp-personal" onchange="toggleInspectorFields()">
@@ -166,32 +202,34 @@
       <option value="4">4 personas</option>
     </select>
   </div>
-  
+
   <div id="insp-campos-activos">
+    <!-- Tramos (varios con coma) + ML total (sin límite) -->
     <div class="card">
       <label>Tramos (separados por coma)</label>
       <input type="text" id="insp-tramos" placeholder="123, 456, 789">
       <label>ML total (sin límite)</label>
       <input type="number" id="insp-ml" min="0" step="1" placeholder="75" oninput="actualizarDiagnosticoInspector()">
     </div>
-    
+
     <div class="card">
       <label>Sacos (40 = 1 M3)</label>
       <input type="number" id="insp-sacos" min="0" step="1" placeholder="0">
     </div>
-    
+
     <div class="card">
       <label>Tapas (máx 5)</label>
       <div id="insp-tapas-lista"></div>
       <button class="btn secondary small" onclick="agregarTapaInspector()">+ Agregar tapa</button>
     </div>
-    
+
     <div class="card">
       <label>Resane (máx 20)</label>
       <input type="number" id="insp-resane" min="0" max="20" step="1" placeholder="0">
     </div>
   </div>
-  
+
+  <!-- Novedad -->
   <div class="card">
     <label>Novedad (si aplica)</label>
     <div class="chips">
@@ -206,18 +244,19 @@
       </div>
     </div>
   </div>
-  
+
+  <!-- Diagnóstico junto a observaciones -->
   <div id="insp-diagnostico"></div>
-  
+
   <div class="card">
     <label>Observaciones</label>
     <textarea id="insp-obs" rows="4" placeholder="Justificar actividades realizadas"></textarea>
   </div>
-  
+
   <button class="btn" onclick="guardarInspector()">Guardar y salir</button>
 </div>
 
-<!-- ==================== PANTALLA 4: CIERRE ==================== -->
+<!-- ==================== PANTALLA 4: CIERRE (RESUMEN) ==================== -->
 <div class="screen" id="screen-cierre">
   <h1>Cierre de jornada</h1>
   <h2>Resumen final</h2>
@@ -232,15 +271,16 @@
     <div class="summary-line"><span>ML total</span><strong id="rs-ml"></strong></div>
     <div class="summary-line"><span>Sacos</span><strong id="rs-sacos"></strong></div>
   </div>
-  
+
+  <!-- CAJA OBSERVACIONES CON 2 SUBCONJUNTOS -->
   <div class="obs-box">
     <label style="margin-top:0;">Observaciones</label>
     <div id="rs-justificar" style="margin-bottom:12px;"></div>
     <div class="obs-separador"></div>
     <textarea id="cierre-obs" rows="4" placeholder="Justifique qué actividades se realizaron" class="obs-texto"></textarea>
   </div>
-  
-  <button class="btn secondary" onclick="volverDashboard()">Volver</button>
+
+  <button class="btn secondary" onclick="volverFormulario()">Volver</button>
   <button class="btn" onclick="confirmarYExportar()">🖨️ Imprimir PDF y Cerrar</button>
 </div>
 
@@ -271,7 +311,7 @@
     <h3>⚠️ Antes de cerrar</h3>
     <p>¿Desea verificar o agregar actividades pendientes?</p>
     <button class="btn secondary" onclick="cerrarModal('modal-pregunta-verificar');mostrarFormularioActividades(true);">✅ SÍ, verificar</button>
-    <button class="btn" onclick="cerrarModal('modal-pregunta-verificar');mostrarInspector();">❌ NO, cerrar directo</button>
+    <button class="btn" onclick="cerrarModal('modal-pregunta-verificar');mostrarFormularioActividades(false);">❌ NO, cerrar directo</button>
   </div>
 </div>
 
@@ -279,7 +319,7 @@
   <div class="modal">
     <button class="modal-close" onclick="cerrarModal('modal-formulario')">✕</button>
     <h3>Actividades del día</h3>
-    
+
     <label>1. Personal</label>
     <select id="form-personal" onchange="toggleFormFields()">
       <option value="">Selecciona...</option>
@@ -287,36 +327,27 @@
       <option value="3">3 personas</option>
       <option value="4">4 personas</option>
     </select>
-    
+
     <div id="form-tramos-section" style="display:none;">
       <label>2. Tramos (separados por coma)</label>
       <input type="text" id="form-tramos" placeholder="123, 456, 789">
       <label>3. ML total (sin límite)</label>
       <input type="number" id="form-ml" min="0" step="1" placeholder="75">
     </div>
-    
+
     <div id="form-campos-activos">
       <label>4. Sacos</label>
       <input type="number" id="form-sacos" min="0" step="1" placeholder="0">
-      
+
       <label>5. Tapas</label>
       <div id="form-tapas-lista"></div>
       <button class="btn secondary small" onclick="agregarTapaFormulario()">+ Agregar tapa</button>
-      
+
       <label>6. Resane</label>
       <input type="number" id="form-resane" min="0" max="20" step="1" placeholder="0">
     </div>
-    
-    <button class="btn" onclick="confirmarFormulario()">Continuar</button>
-  </div>
-</div>
 
-<!-- MODAL: SELECCIONAR INSPECTOR -->
-<div class="overlay" id="ov-inspector">
-  <div class="modal">
-    <h3>👤 Seleccionar inspector</h3>
-    <p style="font-size:14px; color:var(--sub); margin-bottom:12px;">Selecciona quién cierra la jornada</p>
-    <label>Inspector</label>
+    <label>7. Inspector</label>
     <select id="form-inspector">
       <option value="">Selecciona...</option>
       <option>Marlon Ledezma</option>
@@ -325,7 +356,8 @@
       <option>Armando Pájaro</option>
       <option>Eider Mina</option>
     </select>
-    <button class="btn" onclick="confirmarInspector()">Continuar al cierre</button>
+
+    <button class="btn" onclick="confirmarFormulario()">Confirmar</button>
   </div>
 </div>
 
@@ -356,6 +388,7 @@ const SACOS_POR_M3 = 40;
 const SYNC_QUEUE_KEY = "mtto_manual_sync_v1";
 const STATE_KEY = "mtto_manual_state_v1";
 
+/* ==================== INSPECTORES ==================== */
 const INSPECTORES = {
   'ML': 'Marlon Ledezma',
   'LD': 'Luis Díaz',
@@ -364,6 +397,7 @@ const INSPECTORES = {
   'EM': 'Eider Mina'
 };
 
+/* ==================== ESTADO ==================== */
 let STATE = {
   brigada:null, contratista:null, barrio:null, modo:null, gps:null,
   horaInicio:null, horaFin:null, inspector:null,
@@ -372,11 +406,13 @@ let STATE = {
   cierre:{sacos:0, tapas:[], resane:0, personal:null, obs:'', tramosManuales:'', mlManual:0}
 };
 
+/* ==================== VARIABLES TEMPORALES ==================== */
 let tempApto=null, tramoACerrar=null, tempRegresa=null;
 let tapasFormulario=[], tapasInspector=[];
 let formularioConTramos=false;
 let novedadInspectorActual=null, regresaInspectorActual=null;
 
+/* ==================== UTILIDADES ==================== */
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 function capitalizar(s){if(!s)return s;return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
 function nowISO(){return new Date().toISOString();}
@@ -416,6 +452,8 @@ async function getDireccion(gps){
       .replace(/^Calle\s+/i, "Cll ")
       .replace(/^Carrera\s+/i, "Cra ")
       .replace(/^Avenida\s+/i, "Av ")
+      .replace(/^Avenida Calle\s+/i, "Av Cll ")
+      .replace(/^Avenida Carrera\s+/i, "Av Cra ")
       .replace(/^Diagonal\s+/i, "Diag ")
       .replace(/^Transversal\s+/i, "Trans ")
       .replace(/^Circular\s+/i, "Circ ");
@@ -424,83 +462,90 @@ async function getDireccion(gps){
   }catch(e){ return ""; }
 }
 
+/* ==================== DETECCIÓN DE INSPECTOR ==================== */
 function detectarInspector(texto){
   const match = texto.match(/^(\d{1,2}\/\d{1,2}\/\d{4})\s+([DN])\s+([A-Z]{2})$/);
   if(match){
     const fecha = match[1];
     const jornada = match[2] === 'D' ? 'Diurno' : 'Nocturno';
     const iniciales = match[3];
-    if(INSPECTORES[iniciales]){return {fecha, jornada, iniciales, nombre: INSPECTORES[iniciales]};}
+    if(INSPECTORES[iniciales]){
+      return {fecha, jornada, iniciales, nombre: INSPECTORES[iniciales]};
+    }
   }
   return null;
 }
 
-/* ==================== PERSISTENCIA ==================== */
-function guardarEstado(){try{localStorage.setItem(STATE_KEY,JSON.stringify(STATE));}catch(e){}}
+/* ==================== PERSISTENCIA DE ESTADO ==================== */
+function guardarEstado(){
+  try{localStorage.setItem(STATE_KEY,JSON.stringify(STATE));}catch(e){}
+}
+
 function cargarEstado(){
   try{
     const data=localStorage.getItem(STATE_KEY);
-    if(data){const saved=JSON.parse(data); if(!saved.cerrada)STATE=saved;}
+    if(data){
+      const saved=JSON.parse(data);
+      if(!saved.cerrada)STATE=saved;
+    }
   }catch(e){}
 }
 
-/* ==================== COLA + ENVÍO ==================== */
+/* ==================== COLA DE SINCRONIZACIÓN OFFLINE + ENVÍO ==================== */
 function cargarCola(){try{return JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY)||'[]');}catch(e){return[];}}
 function guardarCola(c){try{localStorage.setItem(SYNC_QUEUE_KEY,JSON.stringify(c));}catch(e){}}
-function encolarHito(payload){const cola=cargarCola(); cola.push(payload); guardarCola(cola); actualizarEstadoSync();}
-
+function encolarPayload(p){const c=cargarCola();c.push(p);guardarCola(c);actualizarEstadoSync();}
 function actualizarEstadoSync(){
-  const el = document.getElementById('sync-status');
-  if(!el) return;
-  const cola = cargarCola();
-  if(cola.length === 0){ el.textContent = '● Listo'; el.style.color = 'var(--good)'; }
-  else { el.textContent = `● ${cola.length} pendiente(s)`; el.style.color = 'var(--warn)'; }
+  const el=document.getElementById('sync-status');
+  if(!el)return;
+  const c=cargarCola();
+  if(c.length===0){el.textContent='● Listo';el.style.color='var(--good)';}
+  else{el.textContent=`● ${c.length} pendiente(s)`;el.style.color='var(--warn)';}
+}
+async function procesarCola(){
+  const c=cargarCola();
+  if(!c.length)return;
+  const rest=[];
+  for(const p of c){
+    try{await enviarPayload(p);}catch(e){rest.push(p);}
+  }
+  guardarCola(rest);
+  actualizarEstadoSync();
+}
+async function enviarPayload(p){
+  const fd=new URLSearchParams();
+  fd.append('entry.698566237',p.tipo||'');
+  fd.append('entry.759456156',JSON.stringify(p.datos||{}));
+  fd.append('entry.1958505050',p.brigada||'');
+  fd.append('entry.1438075125',p.contratista||'');
+  fd.append('entry.1542290425',p.barrio||'');
+  fd.append('entry.1617359207',p.inspector||'');
+  await fetch(FORM_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()});
+  return{ok:true};
 }
 
-async function enviarPayload(payload){
-  const fd = new URLSearchParams();
-  fd.append('entry.698566237', payload.tipo || '');
-  fd.append('entry.759456156', JSON.stringify(payload.datos || {}));
-  fd.append('entry.1958505050', payload.brigada || '');
-  fd.append('entry.1438075125', payload.contratista || '');
-  fd.append('entry.1542290425', payload.barrio || '');
-  fd.append('entry.1617359207', payload.inspector || '');
-  await fetch(FORM_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: fd.toString()});
-  return {ok:true};
-}
-
+/* Envía el hito ya mismo si hay red; si falla o no hay red, lo encola para reintento */
 async function enviarHitoRemoto(tipo, datos){
   const payload = {tipo, datos, brigada: STATE.brigada, contratista: STATE.contratista, barrio: STATE.barrio, inspector: STATE.inspector || ''};
-  if(!navigator.onLine){ encolarHito(payload); return; }
+  if(!navigator.onLine){ encolarPayload(payload); return; }
   try{
     await enviarPayload(payload);
     actualizarEstadoSync();
     procesarCola();
-  }catch(e){ encolarHito(payload); }
-}
-
-async function procesarCola(){
-  let cola = cargarCola();
-  if(cola.length === 0) return;
-  const restante = [];
-  for(const item of cola){
-    try{ await enviarPayload(item); }catch(e){ restante.push(item); }
+  }catch(e){
+    encolarPayload(payload);
   }
-  guardarCola(restante);
-  actualizarEstadoSync();
 }
 
 /* ==================== APERTURA ==================== */
 function validarApertura(){
-  const brigada = document.getElementById('ap-brigada').value;
-  const barrio = document.getElementById('ap-barrio').value.trim();
-  document.getElementById('btn-abrir-jornada').disabled = !(brigada && barrio);
+  const ok=document.getElementById('ap-brigada').value&&document.getElementById('ap-barrio').value.trim();
+  document.getElementById('btn-abrir-jornada').disabled=!ok;
 }
 
 document.getElementById('ap-brigada').addEventListener('change',e=>{
   const val=e.target.value;
-  if(val){const p=val.split('|');STATE.brigada=p[0];STATE.contratista=p[1];}
-  else{STATE.brigada=null;STATE.contratista=null;}
+  if(val){const p=val.split('|');STATE.brigada=p[0];STATE.contratista=p[1];}else{STATE.brigada=null;STATE.contratista=null;}
   validarApertura();
 });
 
@@ -547,13 +592,14 @@ document.getElementById('btn-abrir-jornada').onclick=function(){
   }
 };
 
+/* ==================== GPS APERTURA ==================== */
 async function initGPSApertura(){
   document.getElementById('gps-status').textContent="GPS...";
   const gps=await getGPS();
   STATE.gps=gps;
   const barrio=await reverseGeocode(gps);
   const val=document.getElementById('ap-barrio').value;
-  if(barrio && !detectarInspector(val)){
+  if(barrio&&!detectarInspector(val)){
     document.getElementById('ap-barrio').value=barrio;
     STATE.barrio=barrio;
     document.getElementById('gps-status').textContent="✓ auto";
@@ -563,27 +609,28 @@ async function initGPSApertura(){
   validarApertura();
 }
 
+// Inicializar GPS cuando el DOM esté listo
 window.addEventListener('load',()=>{
   initGPSApertura();
   cargarEstado();
-  if(STATE.horaInicio && !STATE.cerrada){
+  if(STATE.horaInicio&&!STATE.cerrada){
     document.getElementById('screen-apertura').classList.remove('active');
     if(STATE.modo==='inspector'){
       document.getElementById('screen-inspector').classList.add('active');
-    } else {
+    }else{
       document.getElementById('screen-dashboard').classList.add('active');
       renderDashboard();
     }
   }
   actualizarEstadoSync();
-  if(navigator.onLine) procesarCola();
+  if(navigator.onLine)procesarCola();
 });
 
-/* ==================== DASHBOARD ==================== */
+/* ==================== DASHBOARD RENDER ==================== */
 function renderDashboard(){
   const box=document.getElementById('tramo-abierto-box');
   const sin=document.getElementById('box-sin-tramo');
-  const activos=STATE.tramos.filter(t=>!t.cierre);
+  const activos=STATE.tramos.filter(t=>!t.cerrado);
   const totalML=calcularMLTotal();
   document.getElementById('info-tramos-ml').textContent=`${STATE.tramos.length} tramos · ${totalML} ML`;
   if(activos.length>0){
@@ -594,6 +641,7 @@ function renderDashboard(){
   }
 }
 
+/* ==================== CÁLCULOS ==================== */
 function calcularMLTotal(){
   return STATE.tramos.filter(t=>t.cierre&&t.cierre.apto==="SI").reduce((s,t)=>s+(Number(t.cierre.ml)||0),0);
 }
@@ -603,7 +651,10 @@ function calcularHorasNoJust(ml){
   return Math.max(0,HORAS_BASE-horasJust).toFixed(1);
 }
 
-/* ==================== BITÁCORA ==================== */
+/* ==================== BITÁCORA ====================
+   Encabezado va UNA sola vez en la bitácora acumulada (primer hito del día).
+   Cada hito adicional entra sin encabezado repetido.
+   El portapapeles de cada hito individual (hito suelto) SÍ conserva su encabezado completo. */
 function generarEncabezado(){
   const brigadaLimpia=STATE.brigada?STATE.brigada.replace(/\s+/g,''):'';
   const fecha=STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'';
@@ -615,10 +666,16 @@ function registrarHito(bloqueTexto){
   STATE.actividadCount++;
   const enc=generarEncabezado();
   const bloque=bloqueTexto.replace('[Actividad del dia #; X]',`[Actividad del dia #; ${STATE.actividadCount}]`);
-  const completo=enc+'\n'+bloque;
-  if(!STATE.bitacoraInterna) STATE.bitacoraInterna=completo;
-  else STATE.bitacoraInterna+='\n\n'+completo;
+  const completo=enc+'\n'+bloque; // esto es lo que va al portapapeles (hito suelto, con encabezado)
+
+  if(!STATE.bitacoraInterna){
+    STATE.bitacoraInterna = enc+'\n\n'+bloque; // primer hito: encabezado + bloque
+  } else {
+    STATE.bitacoraInterna += '\n\n'+bloque; // resto: solo el bloque, sin encabezado repetido
+  }
+
   guardarEstado();
+  copiarAlPortapapeles(completo);
 }
 
 function copiarAlPortapapeles(texto){
@@ -627,11 +684,11 @@ function copiarAlPortapapeles(texto){
 }
 function fallbackCopy(texto){
   const ta=document.createElement('textarea');ta.value=texto;document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');toast("✅ Copiado");}catch(e){}
+  try{document.execCommand('copy');toast("✅ Copiado");}catch(e){toast("❌ Error");}
   document.body.removeChild(ta);
 }
 
-/* ==================== TRAMO ==================== */
+/* ==================== TRAMOS ==================== */
 document.getElementById('nuevo-tramo-nombre').addEventListener('input',e=>{
   document.getElementById('btn-abrir-tramo').disabled=!e.target.value.trim();
 });
@@ -644,7 +701,7 @@ async function abrirTramo(){
   const dir=gps?await getDireccion(gps):'';
   const horaISO=nowISO();
   nombres.forEach(nombre=>{
-    STATE.tramos.push({id:'t'+Date.now()+Math.random(), tramo:nombre, horaInicio:horaISO, gps, dir, cierre:null});
+    STATE.tramos.push({id:'t'+Date.now()+Math.random(),tramo:nombre,horaInicio:horaISO,gps,dir,cerrado:false,cierre:null});
   });
   guardarEstado();
   const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
@@ -655,6 +712,7 @@ async function abrirTramo(){
   renderDashboard();
 }
 
+/* ==================== CIERRE DE TRAMO ==================== */
 function abrirModalCierreTramo(id){
   tramoACerrar=id;tempApto=null;
   document.getElementById('btn-si-apto').classList.remove('activo');
@@ -683,7 +741,6 @@ function activarBotonNO(){
 document.getElementById('ct-ml').addEventListener('input',validarCierreTramo);
 document.getElementById('ct-obs').addEventListener('input',validarCierreTramo);
 
-/* ✅ VALIDACIÓN REAL 60 ML en cierre de tramo */
 function validarCierreTramo(){
   const btn = document.getElementById('btn-confirmar-cierre-tramo');
   const errEl = document.getElementById('ct-ml-error');
@@ -710,7 +767,7 @@ function validarCierreTramo(){
 async function confirmarCierreTramo(){
   const tramo=STATE.tramos.find(t=>t.id===tramoACerrar);
   if(!tramo)return;
-  
+
   if(tempApto==='SI'){
     const ml = Number(document.getElementById('ct-ml').value);
     if(ml <= 0 || ml > ML_MAX_TRAMO){
@@ -721,8 +778,8 @@ async function confirmarCierreTramo(){
   } else {
     tramo.cierre={apto:'NO', ml:0, obs:capitalizar(document.getElementById('ct-obs').value.trim())};
   }
-  
-  tramo.horaFin=nowISO();
+
+  tramo.cerrado=true;tramo.horaFin=nowISO();
   guardarEstado();
   const gps=await getGPS();
   const dir=gps?await getDireccion(gps):'';
@@ -736,7 +793,7 @@ async function confirmarCierreTramo(){
 async function registrarFuerzaMayor(){
   if(!confirm("¿Registrar FUERZA MAYOR? Cerrará la jornada."))return;
   const motivo=prompt("¿Qué pasó? (Fuerza mayor)");
-  STATE.novedades.push({tipo:'Fuerza mayor', motivo:motivo||'', hora:nowISO()});
+  STATE.novedades.push({tipo:'Fuerza mayor',motivo:motivo||'',hora:nowISO()});
   guardarEstado();
   const gps=await getGPS();
   const dir=gps?await getDireccion(gps):'';
@@ -754,8 +811,9 @@ function seleccionarRegresa(val){
   document.getElementById('req-no').classList.toggle('sel',val==='NO');
   document.getElementById('btn-registrar-requerimiento').disabled=false;
 }
+
 async function registrarRequerimiento(){
-  STATE.novedades.push({tipo:'Falta de requerimiento', regresa:tempRegresa, hora:nowISO()});
+  STATE.novedades.push({tipo:'Falta de requerimiento',regresa:tempRegresa,hora:nowISO()});
   guardarEstado();
   const gps=await getGPS();
   const dir=gps?await getDireccion(gps):'';
@@ -782,6 +840,7 @@ function seleccionarNovedadInspector(btn,tipo){
   document.getElementById('insp-novedad-regresa').style.display=tipo==='Requerimiento'?'block':'none';
   if(tipo==='Fuerza mayor'){regresaInspectorActual='NO';}
 }
+
 function seleccionarRegresaInspector(val){
   regresaInspectorActual=val;
   document.getElementById('insp-nov-si').classList.toggle('sel',val==='SI');
@@ -797,11 +856,11 @@ function actualizarDiagnosticoInspector(){
     const novReq=STATE.novedades.filter(n=>n.tipo==='Falta de requerimiento').length;
     const novFuerza=STATE.novedades.filter(n=>n.tipo==='Fuerza mayor').length;
     let html='';
-    if(ml>=RANGO_MIN && ml<=RANGO_MAX){html='<div class="legend-box legend-good">✅ Meta cumplida</div>';}
-    else if(ml<RANGO_MIN && novReq>0){html='<div class="obs-diagnostico">🔧 Atención elementos — Justificar '+horasNoJust+' h</div>';}
-    else if(ml<RANGO_MIN && novFuerza>0){html='<div class="obs-diagnostico">ℹ️ Déficit justificable — Justificar '+horasNoJust+' h</div>';}
-    else if(ml<RANGO_MIN){html='<div class="obs-diagnostico">📍 Revisar zona/ritmo — Justificar '+horasNoJust+' h</div>';}
-    else if(ml>RANGO_MAX){html='<div class="obs-diagnostico">📈 Justificar exceso — '+(ml-RANGO_MAX)+' ML</div>';}
+    if(ml>=RANGO_MIN&&ml<=RANGO_MAX){html='<div class="legend-box legend-good">✅ Meta cumplida</div>';}
+    else if(ml<RANGO_MIN&&novReq>0){html='<div class="justificar-box">🔧 Atención elementos — Justificar '+horasNoJust+' h</div>';}
+    else if(ml<RANGO_MIN&&novFuerza>0){html='<div class="justificar-box">ℹ️ Déficit justificable — Justificar '+horasNoJust+' h</div>';}
+    else if(ml<RANGO_MIN){html='<div class="justificar-box">📍 Revisar zona/ritmo — Justificar '+horasNoJust+' h</div>';}
+    else if(ml>RANGO_MAX){html='<div class="justificar-box">📈 Justificar exceso — '+(ml-RANGO_MAX)+' ML</div>';}
     box.innerHTML=html;
   } else {box.innerHTML='';}
 }
@@ -817,15 +876,11 @@ function mostrarFormularioActividades(conTramos){
   document.getElementById('form-ml').value='';
   document.getElementById('form-sacos').value='';
   document.getElementById('form-resane').value='';
+  document.getElementById('form-inspector').value='';
   document.getElementById('form-tramos-section').style.display=conTramos?'block':'none';
   document.getElementById('form-campos-activos').classList.remove('disabled-field');
   renderTapasFormulario();
   abrirModal('modal-formulario');
-}
-
-function mostrarInspector(){
-  document.getElementById('form-inspector').value='';
-  abrirModal('modal-inspector');
 }
 
 function toggleFormFields(){
@@ -885,11 +940,16 @@ function renderTapasInspector(){
   lista.innerHTML=tapasInspector.map((t,i)=>`<div class="tapa-entry"><div class="entry-header"><span>Tapa #${i+1}</span><button class="entry-remove" onclick="eliminarTapaInspector('${t.id}')">✕</button></div><div class="campo-grupo"><label>Tipo:</label><select onchange="actualizarTapaInspector('${t.id}','tipo',this.value)"><option value="">Tipo...</option><option value="60x60" ${t.tipo==='60x60'?'selected':''}>60x60</option><option value="80x80" ${t.tipo==='80x80'?'selected':''}>80x80</option></select></div><div class="campo-grupo"><label>Póliza:</label><input type="text" placeholder="Solo números" value="${t.poliza}" oninput="actualizarTapaInspector('${t.id}','poliza',this.value.replace(/[^0-9]/g,''))"></div></div>`).join('');
 }
 
-/* ✅ CONFIRMAR FORMULARIO — SIN LÍMITE ML, va al modal inspector */
+/* ==================== CONFIRMAR FORMULARIO ==================== */
 function confirmarFormulario(){
   const personal=document.getElementById('form-personal').value;
+  const inspector=document.getElementById('form-inspector').value;
   if(!personal){toast('Selecciona personal');return;}
+  if(!inspector){toast('Selecciona inspector');return;}
+
   STATE.cierre.personal=Number(personal);
+  STATE.inspector=inspector;
+
   if(personal==='0'){
     STATE.cierre.sacos=0;
     STATE.cierre.tapas=[];
@@ -901,24 +961,18 @@ function confirmarFormulario(){
     STATE.cierre.tapas=tapasFormulario;
     STATE.cierre.resane=Number(document.getElementById('form-resane').value)||0;
   }
+
   if(formularioConTramos){
     STATE.cierre.tramosManuales=document.getElementById('form-tramos').value.trim();
     STATE.cierre.mlManual=Number(document.getElementById('form-ml').value)||0;
   }
-  cerrarModal('modal-formulario');
-  mostrarInspector();
-}
 
-/* ✅ CONFIRMAR INSPECTOR → resumen final */
-function confirmarInspector(){
-  const inspector=document.getElementById('form-inspector').value;
-  if(!inspector){toast('Selecciona inspector');return;}
-  STATE.inspector=inspector;
   guardarEstado();
-  cerrarModal('modal-inspector');
+  cerrarModal('modal-formulario');
   irACierreJornada();
 }
 
+/* ==================== IR A CIERRE ==================== */
 function irACierreJornada(){
   STATE.horaFin=nowISO();
   document.getElementById('screen-dashboard').classList.remove('active');
@@ -926,7 +980,7 @@ function irACierreJornada(){
   renderResumen();
 }
 
-/* ==================== RESUMEN ==================== */
+/* ==================== RESUMEN FINAL ==================== */
 function renderResumen(){
   document.getElementById('rs-brigada').textContent=STATE.brigada;
   document.getElementById('rs-contratista').textContent=STATE.contratista;
@@ -937,22 +991,24 @@ function renderResumen(){
   const horasNoJust=calcularHorasNoJust(mlTotal);
   document.getElementById('rs-ml').textContent=mlTotal+' ML';
   document.getElementById('rs-sacos').textContent=STATE.cierre.sacos+' sacos';
+
   const justificarBox=document.getElementById('rs-justificar');
   const novReq=STATE.novedades.filter(n=>n.tipo==='Falta de requerimiento').length;
   const novFuerza=STATE.novedades.filter(n=>n.tipo==='Fuerza mayor').length;
   let html='';
-  if(mlTotal>=RANGO_MIN && mlTotal<=RANGO_MAX){html='<div class="legend-box legend-good">✅ Meta cumplida</div>';}
-  else if(mlTotal<RANGO_MIN && novReq>0){html='<div class="obs-diagnostico">🔧 Atención elementos — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
-  else if(mlTotal<RANGO_MIN && novFuerza>0){html='<div class="obs-diagnostico">ℹ️ Déficit justificable — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
+  if(mlTotal>=RANGO_MIN&&mlTotal<=RANGO_MAX){html='<div class="legend-box legend-good">✅ Meta cumplida</div>';}
+  else if(mlTotal<RANGO_MIN&&novReq>0){html='<div class="obs-diagnostico">🔧 Atención elementos — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
+  else if(mlTotal<RANGO_MIN&&novFuerza>0){html='<div class="obs-diagnostico">ℹ️ Déficit justificable — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
   else if(mlTotal<RANGO_MIN){html='<div class="obs-diagnostico">📍 Revisar zona/ritmo — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
   else if(mlTotal>RANGO_MAX){html='<div class="obs-diagnostico">📈 Justificar exceso — '+(mlTotal-RANGO_MAX)+' ML<br><span style="font-size:12px;">Justifique por qué se lograron más ML en el mismo tiempo</span></div>';}
   justificarBox.innerHTML=html;
+
   const tramosBox=document.getElementById('rs-tramos');
   tramosBox.innerHTML='<div class="section-label">Tramos</div>';
   STATE.tramos.forEach(t=>{
     const d=document.createElement('div');d.className='summary-line';
-    if(t.cierre && t.cierre.apto==='SI'){d.innerHTML=`<span>✅ ${t.tramo}</span><strong>${t.cierre.ml} ML</strong>`;}
-    else if(t.cierre && t.cierre.apto==='NO'){d.innerHTML=`<span>❌ ${t.tramo}</span><strong>${t.cierre.obs}</strong>`;}
+    if(t.cierre&&t.cierre.apto==='SI'){d.innerHTML=`<span>✅ ${t.tramo}</span><strong>${t.cierre.ml} ML</strong>`;}
+    else if(t.cierre&&t.cierre.apto==='NO'){d.innerHTML=`<span>❌ ${t.tramo}</span><strong>${t.cierre.obs}</strong>`;}
     else{d.innerHTML=`<span class="tramo-sin-cerrar">⚠️ ${t.tramo} — SIN CERRAR</span><strong>—</strong>`;}
     tramosBox.appendChild(d);
   });
@@ -963,10 +1019,10 @@ function renderResumen(){
   }
 }
 
-function volverDashboard(){
+/* ==================== VOLVER ==================== */
+function volverFormulario(){
   document.getElementById('screen-cierre').classList.remove('active');
-  document.getElementById('screen-dashboard').classList.add('active');
-  renderDashboard();
+  preguntarVerificarActividades();
 }
 
 /* ==================== PDF ==================== */
@@ -986,49 +1042,70 @@ function generarPDFCierre(){
   const novReq=STATE.novedades.filter(n=>n.tipo==='Falta de requerimiento').length;
   const novFuerza=STATE.novedades.filter(n=>n.tipo==='Fuerza mayor').length;
   let diagnostico='';
-  if(mlTotal>=RANGO_MIN && mlTotal<=RANGO_MAX){diagnostico='✅ Meta cumplida';}
-  else if(mlTotal<RANGO_MIN && novReq>0){diagnostico=`🔧 Atención elementos — Horas por justificar: ${horasNoJust} h`;}
-  else if(mlTotal<RANGO_MIN && novFuerza>0){diagnostico=`ℹ️ Déficit justificable — Horas por justificar: ${horasNoJust} h`;}
-  else if(mlTotal<RANGO_MIN){diagnostico=`📍 Revisar zona/ritmo — Horas por justificar: ${horasNoJust} h`;}
-  else if(mlTotal>RANGO_MAX){diagnostico=`📈 Justificar exceso — ${mlTotal-RANGO_MAX} ML`;}
+  if(mlTotal>=RANGO_MIN&&mlTotal<=RANGO_MAX){diagnostico='✅ Meta cumplida';}
+  else if(mlTotal<RANGO_MIN&&novReq>0){diagnostico=`🔧 Atención elementos — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
+  else if(mlTotal<RANGO_MIN&&novFuerza>0){diagnostico=`ℹ️ Déficit justificable — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
+  else if(mlTotal<RANGO_MIN){diagnostico=`📍 Revisar zona/ritmo — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
+  else if(mlTotal>RANGO_MAX){diagnostico=`📈 Justificar exceso — ${mlTotal-RANGO_MAX} ML<br><span style="font-size:11px;">Justifique por qué se lograron más ML en el mismo tiempo</span>`;}
+
   const contenido=`
     <div style="font-family:Arial,sans-serif;color:#000;background:#fff;padding:20px;max-width:800px;margin:0 auto;">
+      <!-- ENCABEZADO -->
       <div style="background:#1a2e1a;color:#fff;padding:15px;border-radius:8px;margin-bottom:10px;text-align:center;">
         <h1 style="font-size:16px;font-weight:800;margin:0;">#_Mtto_Manual</h1>
         <p style="font-size:11px;margin:5px 0 0;">Hoja de Cierre de Jornada</p>
       </div>
+
+      <!-- DATOS -->
       <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
         <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Datos de la Jornada</div>
         <div style="font-size:12px;color:#000;">Brigada: ${STATE.brigada}<br>Contratista: ${STATE.contratista}<br>Fecha: ${fecha}<br>Personal: ${STATE.cierre.personal||'—'} personas<br>Inspector: ${STATE.inspector||'—'}</div>
       </div>
+
+      <!-- TRAMOS -->
       <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
         <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Tramos Aptos CCTV</div>
         ${STATE.tramos.filter(t=>t.cierre&&t.cierre.apto==='SI').map(t=>`<div style="font-size:12px;color:#000;">✅ ${t.tramo} — ${t.cierre.ml} ML</div>`).join('')||'<div style="font-size:12px;color:#000;">Sin tramos</div>'}
         ${STATE.cierre.tramosManuales?`<div style="font-size:12px;color:#000;">📝 ${STATE.cierre.tramosManuales} (manual) — ${STATE.cierre.mlManual} ML</div>`:''}
       </div>
+
+      <!-- ACTIVIDADES -->
       <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
         <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Actividades</div>
         <div style="font-size:12px;color:#000;">Sacos: ${STATE.cierre.sacos}<br>Tapas 60x60: ${tapas60}<br>Tapas 80x80: ${tapas80}<br>Resane: ${STATE.cierre.resane}</div>
       </div>
+
+      <!-- MÉTRICAS -->
       <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
         <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Métricas</div>
         <div style="font-size:12px;color:#000;">ML total: ${mlTotal} ML<br>Meta: 140 ML</div>
       </div>
+
+      <!-- OBSERVACIONES CON 2 SUBCONJUNTOS -->
       <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
         <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Observaciones</div>
         <div style="background:#fff8f0;border:2px solid #f59e0b;border-radius:8px;padding:10px;margin-bottom:10px;text-align:center;font-weight:700;color:#f59e0b;">${diagnostico}</div>
+        <div style="border-top:1px dashed #22c55e;margin:10px 0;"></div>
         <div style="font-size:12px;color:#000;min-height:60px;">${STATE.cierre.obs||'Sin observaciones'}</div>
       </div>
+
+      <!-- SEPARADOR -->
       <div style="border-top:2px solid #1a2e1a;margin:10px 0;"></div>
+
+      <!-- BITÁCORA DETALLADA (encabezado único, hitos sin repetirlo) -->
       <div style="background:#fff;border:1px solid #333;border-radius:8px;padding:12px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">📋 Bitácora Detallada</div>
+        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">📋 Bitácora Detallada del Día</div>
         <pre style="font-size:11px;color:#000;white-space:pre-wrap;font-family:monospace;margin:0;">${STATE.bitacoraInterna||'Sin registros'}</pre>
       </div>
+
+      <!-- FIRMA -->
       <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:15px;color:#000;">
         <div>Firma: ______________________</div>
         <div>Fecha: ${fecha}</div>
       </div>
-    </div>`;
+    </div>
+  `;
+
   const iframe=document.createElement('iframe');
   iframe.style.position='fixed';iframe.style.right='0';iframe.style.bottom='0';
   iframe.style.width='0';iframe.style.height='0';iframe.style.border='0';
@@ -1049,6 +1126,7 @@ function generarPDFCierre(){
   setTimeout(()=>{iframe.contentWindow.focus();iframe.contentWindow.print();},500);
 }
 
+/* ==================== BITÁCORA COMPLETA ==================== */
 function verBitacoraCompleta(){
   document.getElementById('bitacora-completa-text').textContent=STATE.bitacoraInterna||"No hay registros";
   abrirModal('modal-bitacora');
@@ -1113,11 +1191,12 @@ function reiniciarApp(){
 const MODAL_MAP={
   'modal-bitacora':'ov-bitacora','modal-cierre-tramo':'ov-cierre-tramo',
   'modal-pregunta-verificar':'ov-pregunta-verificar','modal-formulario':'ov-formulario',
-  'modal-inspector':'ov-inspector','modal-requerimiento':'ov-requerimiento'
+  'modal-requerimiento':'ov-requerimiento'
 };
 function abrirModal(id){document.getElementById(MODAL_MAP[id]).classList.add('active');}
 function cerrarModal(id){document.getElementById(MODAL_MAP[id]).classList.remove('active');}
 
+/* ==================== VERIFICAR CONEXIÓN ==================== */
 function verificarConexion(){
   const offlineEl=document.getElementById('offline-indicator');
   if(!navigator.onLine){offlineEl.style.display='block';}
@@ -1126,9 +1205,10 @@ function verificarConexion(){
 window.addEventListener('online',()=>{verificarConexion();procesarCola();});
 window.addEventListener('offline',verificarConexion);
 
+/* ==================== PWA: SERVICE WORKER ==================== */
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
+    navigator.serviceWorker.register('service-worker-manual.js')
       .then(reg => console.log('✅ SW registrado'))
       .catch(err => console.error('❌ SW:', err));
   });
