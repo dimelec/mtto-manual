@@ -1,0 +1,18 @@
+{
+  "name": "Mtto Manual - Vactor",
+  "short_name": "Mtto Manual",
+  "description": "Bitácora de mantenimiento manual de redes de alcantarillado",
+  "start_url": "./manual.html",
+  "display": "standalone",
+  "background_color": "#0a0f0d",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-manual.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
