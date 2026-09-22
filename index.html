@@ -678,7 +678,14 @@ document.getElementById('btn-abrir-jornada').onclick=async function(){
     document.getElementById('screen-apertura').classList.remove('active');
     document.getElementById('screen-dashboard').classList.add('active');
     renderDashboard();
-    enviarHitoRemoto('jornadaInicio', {});
+    enviarHitoRemoto('jornadaInicio', {
+      fecha: STATE.horaInicio ? new Date(STATE.horaInicio).toLocaleDateString('es-CO') : '',
+      horaInicio: STATE.horaInicio || '',
+      brigada: STATE.brigada || '',
+      contratista: STATE.contratista || '',
+      barrio: STATE.barrio || '',
+      turno: STATE.turno || ''
+    });
 
     // Actividad #1: Apertura de jornada
     const turno=calcularTurno(STATE.horaInicio);
