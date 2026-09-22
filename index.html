@@ -1184,8 +1184,6 @@ function construirTextoInformeCierre(){
 function confirmarYExportar(){
   const btn=document.getElementById('btn-confirmar-cierre');
   if(btn.disabled) return;
-  btn.disabled=true;
-  btn.textContent='✅ Confirmado — procesando...';
 
   STATE.cierre.obs=document.getElementById('cierre-obs').value.trim();
   STATE.horaFin=STATE.horaFin||nowISO();
@@ -1194,35 +1192,44 @@ function confirmarYExportar(){
   const mlSistema=calcularMLTotal();
   const mlManual=Number(STATE.cierre.mlManual)||0;
   const mlTotal=mlSistema+mlManual;
-  const sacos=Number(STATE.cierre.sacos)||0;
-  const m3Estimado=sacos/40;
   const resumen=construirTextoInformeCierre();
 
-  enviarHitoRemoto('jornadaCierre', {
+  const datosCierre={
     fecha: STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'',
     horaInicio: STATE.horaInicio||'',
     horaFin: STATE.horaFin||'',
-    inspector: STATE.inspector||'',
+    brigada: STATE.brigada||'',
+    contratista: STATE.contratista||'',
     barrio: STATE.barrio||'',
+    inspector: STATE.inspector||'',
     personal: Number(STATE.cierre.personal)||0,
-    mlSistema,
-    mlManual,
-    mlTotal,
-    sacos,
-    m3Estimado,
-    tapas: STATE.cierre.tapas||[],
-    resane: Number(STATE.cierre.resane)||0,
-    tramosManuales: STATE.cierre.tramosManuales||'',
+
     tramos: (STATE.tramos||[]).map(t=>({
       tramo: t.tramo||'',
       aptoCCTV: t.cierre&&t.cierre.apto ? t.cierre.apto : '',
       ml: t.cierre&&t.cierre.ml ? Number(t.cierre.ml)||0 : 0,
-      observacion: t.cierre&&t.cierre.obs ? t.cierre.obs : ''
+      observacion: t.cierre&&t.cierre.obs ? t.cierre.obs : '',
+      cerrado: !!t.cerrado
     })),
+    tramosManuales: STATE.cierre.tramosManuales||'',
+
+    mlSistema: mlSistema,
+    mlManual: mlManual,
+    mlTotal: mlTotal,
+
+    sacos: Number(STATE.cierre.sacos)||0,
+    tapas: STATE.cierre.tapas||[],
+    resane: Number(STATE.cierre.resane)||0,
+
     novedades: STATE.novedades||[],
     observaciones: STATE.cierre.obs||'',
-    resumen
-  });
+    resumen: resumen
+  };
+
+  btn.disabled=true;
+  btn.textContent='✅ Confirmado — procesando...';
+
+  enviarHitoRemoto('jornadaCierre', datosCierre);
 
   copiarAlPortapapeles(resumen);
   generarPDFCierre();
