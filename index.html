@@ -430,13 +430,17 @@ function getGPS(){
 }
 
 async function reverseGeocode(gps){
-  if(!gps)return"";
+  if(!gps)return "";
   try{
-    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${gps.lat}&lon=${gps.lng}&format=json`);
+    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${gps.lat}&lon=${gps.lng}&zoom=18&addressdetails=1`,{
+      headers:{'Accept-Language':'es'}
+    });
     const d=await r.json();
     const a=d.address||{};
-    return capitalizar(a.suburb||a.neighbourhood||a.quarter||a.city_district||a.village||"");
-  }catch(e){return"";}
+    return a.neighbourhood||a.suburb||a.quarter||a.residential||a.city_district||a.hamlet||a.village||"";
+  }catch(e){
+    return "";
+  }
 }
 
 function abreviarVia(nombre){
@@ -1184,9 +1188,43 @@ function confirmarYExportar(){
   btn.textContent='✅ Confirmado — procesando...';
 
   STATE.cierre.obs=document.getElementById('cierre-obs').value.trim();
-  enviarHitoRemoto('jornadaCierre', {mlTotal: calcularMLTotal()+STATE.cierre.mlManual, observaciones: STATE.cierre.obs});
+  STATE.horaFin=STATE.horaFin||nowISO();
+  guardarEstado();
 
-  copiarAlPortapapeles(construirTextoInformeCierre());
+  const mlSistema=calcularMLTotal();
+  const mlManual=Number(STATE.cierre.mlManual)||0;
+  const mlTotal=mlSistema+mlManual;
+  const sacos=Number(STATE.cierre.sacos)||0;
+  const m3Estimado=sacos/40;
+  const resumen=construirTextoInformeCierre();
+
+  enviarHitoRemoto('jornadaCierre', {
+    fecha: STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'',
+    horaInicio: STATE.horaInicio||'',
+    horaFin: STATE.horaFin||'',
+    inspector: STATE.inspector||'',
+    barrio: STATE.barrio||'',
+    personal: Number(STATE.cierre.personal)||0,
+    mlSistema,
+    mlManual,
+    mlTotal,
+    sacos,
+    m3Estimado,
+    tapas: STATE.cierre.tapas||[],
+    resane: Number(STATE.cierre.resane)||0,
+    tramosManuales: STATE.cierre.tramosManuales||'',
+    tramos: (STATE.tramos||[]).map(t=>({
+      tramo: t.tramo||'',
+      aptoCCTV: t.cierre&&t.cierre.apto ? t.cierre.apto : '',
+      ml: t.cierre&&t.cierre.ml ? Number(t.cierre.ml)||0 : 0,
+      observacion: t.cierre&&t.cierre.obs ? t.cierre.obs : ''
+    })),
+    novedades: STATE.novedades||[],
+    observaciones: STATE.cierre.obs||'',
+    resumen
+  });
+
+  copiarAlPortapapeles(resumen);
   generarPDFCierre();
 }
 
