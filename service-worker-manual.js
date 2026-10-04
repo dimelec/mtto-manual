@@ -1,5 +1,4 @@
-const CACHE_NAME = 'mtto-manual-v2';
-
+const CACHE_NAME = 'mtto-manual-v3';
 const APP_SHELL = [
   './index.html',
   './manifest-manual.json',
@@ -29,20 +28,35 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // No interceptar llamadas externas:
-  // Google Forms, Nominatim, Overpass, etc.
+  // No interceptar llamadas externas (Google Forms, Nominatim, Overpass, motor, etc.)
   if (url.origin !== self.location.origin) return;
 
+  // ── HTML: red primero, caché como respaldo ──
+  // Así el operador recibe siempre la versión recién desplegada cuando tiene red,
+  // y solo usa caché si está offline. Evita quedar pegado a una versión vieja.
+  if (event.request.mode === 'navigate' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // ── Assets (iconos, JS, CSS): caché primero, red como respaldo ──
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-
       return fetch(event.request).then((response) => {
         if (response.ok) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, clone);
-          });
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
       });
