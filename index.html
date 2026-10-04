@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#22c55e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="icon-manual.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* ==================== VARIABLES Y ESTILOS BASE ==================== */
     :root{
       --bg:#0a0f0d; --card:#121a16; --card2:#1a2420; --line:#243029;
       --text:#e8f0eb; --sub:#8aa398; --accent:#22c55e; --good:#4ade80;
@@ -17,19 +17,11 @@
     }
     *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
     body{margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding-bottom:40px;}
-
-    /* ==================== PANTALLAS ==================== */
     .screen{display:none; padding:16px; max-width:480px; margin:0 auto; min-height:100vh;}
     .screen.active{display:block;}
-
-    /* ==================== TIPOGRAFÍA ==================== */
     h1{font-size:20px; margin:0 0 4px;}
     h2{font-size:14px; color:var(--sub); margin:0 0 20px; font-weight:500;}
-
-    /* ==================== TARJETAS ==================== */
     .card{background:var(--card); border-radius:var(--radius); padding:16px; margin-bottom:14px; border:1px solid var(--line);}
-
-    /* ==================== FORMULARIOS ==================== */
     label{display:block; font-size:14px; color:var(--sub); margin:16px 0 8px; font-weight:600;}
     label:first-child{margin-top:0;}
     input[type=text], input[type=number], input[type=time], select, textarea{
@@ -38,28 +30,21 @@
     }
     input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent);}
     .hint{font-size:12px; color:var(--sub); margin-top:4px;}
-
-    /* ==================== BOTONES ==================== */
     .btn{width:100%; padding:18px; border-radius:12px; font-size:18px; font-weight:700; background:var(--accent); color:#fff; margin-top:20px; border:none; cursor:pointer; font-family:inherit;}
     .btn:disabled{opacity:.35; cursor:not-allowed;}
     .btn.secondary{background:var(--card2); color:var(--text); border:1px solid var(--line);}
     .btn.small{padding:10px 14px; font-size:14px; margin-top:8px;}
-
-    /* ==================== TOGGLES Y CHIPS ==================== */
+    .btn.wa{background:#25d366; color:#06220f;}
     .toggle2{display:flex; gap:10px; margin-top:6px;}
     .toggle2 button{flex:1; padding:16px; border-radius:12px; background:var(--card2); color:var(--text); border:1px solid var(--line); font-size:16px; font-weight:600; cursor:pointer;}
     .toggle2 button.sel{background:var(--accent); border-color:var(--accent); color:#fff;}
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;}
     .chip{padding:10px 14px; border-radius:20px; background:var(--card2); border:1px solid var(--line); color:var(--text); font-size:14px; font-weight:500; cursor:pointer;}
     .chip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
-
-    /* ==================== SECCIONES ==================== */
     .section-label{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--sub); margin:20px 0 10px;}
     .grid-actions{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-
-    /* ==================== DASHBOARD ==================== */
     .top-icons{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
-    .icon-btn{background:none; border:none; font-size:24px; cursor:pointer; padding:4px; opacity:0.7;}
+    .icon-btn{background:none; border:none; font-size:24px; cursor:pointer; padding:4px; opacity:0.7; color:var(--text);}
     .info-discreta{text-align:right; font-size:12px; color:var(--sub);}
     .tramo-input-highlight{animation:pulse-glow 2s ease-in-out infinite;border-color:var(--accent)!important;box-shadow:0 0 15px rgba(34,197,94,0.4);}
     @keyframes pulse-glow{0%,100%{box-shadow:0 0 10px rgba(34,197,94,0.3);}50%{box-shadow:0 0 25px rgba(34,197,94,0.7);}}
@@ -67,21 +52,15 @@
     .action-btn .ic{font-size:24px;}
     .tramo-open{background:var(--card2);border:1px solid var(--accent);border-radius:12px;padding:14px;margin-bottom:10px;}
     .close-tramo-btn{margin-top:12px;background:var(--bad);color:#fff;padding:12px;border-radius:10px;width:100%;font-weight:600;cursor:pointer;border:none;font-size:15px;}
-
-    /* ==================== MODALES ==================== */
     .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;align-items:flex-end;}
     .overlay.active{display:flex;}
     .modal{background:var(--card);width:100%;max-width:480px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px 16px 26px;max-height:88vh;overflow-y:auto;}
     .modal h3{margin:0 0 14px;font-size:18px;}
     .modal-close{float:right;background:none;color:var(--sub);font-size:24px;padding:0 4px;cursor:pointer;border:none;}
-
-    /* ==================== RESUMEN ==================== */
     .summary-line{display:flex;justify-content:space-between;font-size:15px;padding:8px 0;border-bottom:1px solid var(--line);}
     .legend-box{padding:14px;border-radius:10px;font-weight:600;font-size:14px;text-align:center;margin-top:10px;}
     .legend-good{background:#0d2b1a;color:var(--good);}
-    .justificar-box{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-top:10px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);animation:pulse-glow 1.5s ease-in-out infinite;}
-
-    /* ==================== UTILIDADES ==================== */
+    .justificar-box{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-top:10px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);}
     .toast{position:fixed;bottom:16px;left:16px;right:16px;max-width:448px;margin:0 auto;background:var(--card2);border:1px solid var(--accent);padding:12px 14px;border-radius:10px;font-size:13px;display:none;z-index:60;}
     .toast.show{display:block;}
     .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;background:var(--accent);color:#fff;margin-left:6px;}
@@ -91,8 +70,6 @@
     .offline-indicator{display:none;background:var(--bad);color:#fff;text-align:center;font-size:12px;padding:4px;border-radius:6px;margin-bottom:10px;}
     .error-msg{color:var(--bad); font-size:12px; margin-top:4px; display:none;}
     .error-msg.show{display:block;}
-
-    /* ==================== CIERRE DE TRAMO ==================== */
     .btn-si-apto{position:relative;overflow:hidden;transition:all 0.3s;padding:16px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);font-size:16px;font-weight:600;cursor:pointer;text-align:left;width:100%;}
     .btn-si-apto.activo{background:var(--accent);border-color:var(--accent);color:#fff;}
     .btn-si-apto input{display:none;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid #fff;background:rgba(255,255,255,0.9);color:#000;font-size:16px;}
@@ -101,27 +78,20 @@
     .btn-no-apto.activo{background:var(--bad);border-color:var(--bad);color:#fff;}
     .btn-no-apto input{display:none;width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid #fff;background:rgba(255,255,255,0.9);color:#000;font-size:16px;}
     .btn-no-apto.activo input{display:block;}
-
-    /* ==================== ADVERTENCIA INSPECTOR ==================== */
     .advertencia{background:var(--bad);color:#fff;padding:12px;border-radius:8px;font-weight:700;text-align:center;margin-top:8px;display:none;}
     .advertencia.show{display:block;}
-
-    /* ==================== CAMPOS DESHABILITADOS ==================== */
     .disabled-field{opacity:0.4;pointer-events:none;}
-
-    /* ==================== TAPAS ==================== */
     .tapa-entry{border:1px dashed var(--line);border-radius:8px;padding:10px;margin:8px 0;background:var(--card2);}
     .tapa-entry .entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
     .tapa-entry .entry-remove{background:var(--bad);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;}
     .campo-grupo{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
     .campo-grupo label{font-size:12px;margin:0;min-width:50px;}
     .campo-grupo input,.campo-grupo select{flex:1;font-size:15px;padding:10px;}
-
-    /* ==================== CAJA OBSERVACIONES CON SUBCONJUNTOS ==================== */
     .obs-box{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;border:1px solid var(--line);}
     .obs-diagnostico{padding:14px;border-radius:10px;font-weight:700;font-size:15px;text-align:center;margin-bottom:12px;background:#2b1a0d;color:var(--warn);border:2px solid var(--warn);}
     .obs-separador{border-top:1px dashed var(--line);margin:12px 0;}
     .obs-texto{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text);font-size:15px;min-height:80px;width:100%;font-family:inherit;}
+    #cv{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;background:#000;}
   </style>
 </head>
 <body>
@@ -143,6 +113,14 @@
       <option value="Z4|ZyGJ">Z4 — ZyGJ</option>
     </select>
 
+    <div id="ap-tarea-wrap" style="display:none;margin-top:16px;">
+      <label>Tarea asignada</label>
+      <select id="ap-tarea">
+        <option value="">Selecciona tarea...</option>
+      </select>
+      <div class="hint" id="ap-tarea-hint"></div>
+    </div>
+
     <label>Barrio <span class="badge" id="gps-status">GPS...</span></label>
     <input type="text" id="ap-barrio" placeholder="Se autocompleta por GPS">
     <div class="advertencia" id="advertencia-inspector">⚠️ MODO INSPECTOR ACTIVADO</div>
@@ -151,7 +129,7 @@
   </div>
 </div>
 
-<!-- ==================== PANTALLA 2: DASHBOARD (OPERADOR) ==================== -->
+<!-- ==================== PANTALLA 2: DASHBOARD ==================== -->
 <div class="screen" id="screen-dashboard">
   <div class="top-icons">
     <button class="icon-btn" onclick="verBitacoraCompleta()">📋</button>
@@ -159,18 +137,17 @@
   </div>
 
   <div class="sync-status" id="sync-status">● Listo</div>
+  <div style="display:none;text-align:center;font-size:11px;color:var(--warn);margin-bottom:10px;" id="verify-status"></div>
   <div class="offline-indicator" id="offline-indicator">📡 Sin conexión</div>
 
   <div id="tramo-abierto-box"></div>
 
-  <!-- Tramos múltiples (separados por coma) -->
   <div class="section-label">Tramos (separados por coma)</div>
   <div class="grid-actions" id="box-sin-tramo">
     <input type="text" id="nuevo-tramo-nombre" class="tramo-input-highlight" placeholder="Ej: 123, 456" style="grid-column:1/3;">
     <button class="btn" id="btn-abrir-tramo" style="grid-column:1/3;" disabled onclick="abrirTramo()">Abrir tramos</button>
   </div>
 
-  <!-- Novedades: F. mayor y Requerimiento -->
   <div class="grid-actions" style="margin-top:20px;">
     <button class="action-btn" onclick="registrarFuerzaMayor()"><span class="ic">🌧️</span>F. mayor</button>
     <button class="action-btn" onclick="abrirModal('modal-requerimiento')"><span class="ic">⏸️</span>Requerimiento</button>
@@ -184,7 +161,6 @@
   <h1>Modo Inspector</h1>
   <h2 id="inspector-id">Z1|8/9/2026|D|ML</h2>
 
-  <!-- Hora de inicio y horas totales (solo inspector) -->
   <div class="card">
     <label>Hora de inicio</label>
     <input type="time" id="insp-hora-inicio" value="">
@@ -192,7 +168,6 @@
     <input type="number" id="insp-horas-totales" min="0" max="12" step="0.5" placeholder="7">
   </div>
 
-  <!-- Personal primero -->
   <div class="card">
     <label>Personal</label>
     <select id="insp-personal" onchange="toggleInspectorFields()">
@@ -204,7 +179,6 @@
   </div>
 
   <div id="insp-campos-activos">
-    <!-- Tramos (varios con coma) + ML total (sin límite) -->
     <div class="card">
       <label>Tramos (separados por coma)</label>
       <input type="text" id="insp-tramos" placeholder="123, 456, 789">
@@ -229,7 +203,6 @@
     </div>
   </div>
 
-  <!-- Novedad -->
   <div class="card">
     <label>Novedad (si aplica)</label>
     <div class="chips">
@@ -245,7 +218,6 @@
     </div>
   </div>
 
-  <!-- Diagnóstico junto a observaciones -->
   <div id="insp-diagnostico"></div>
 
   <div class="card">
@@ -256,7 +228,7 @@
   <button class="btn" onclick="guardarInspector()">Guardar y salir</button>
 </div>
 
-<!-- ==================== PANTALLA 4: CIERRE (RESUMEN) ==================== -->
+<!-- ==================== PANTALLA 4: CIERRE ==================== -->
 <div class="screen" id="screen-cierre">
   <h1>Cierre de jornada</h1>
   <h2>Resumen final</h2>
@@ -264,6 +236,7 @@
     <div class="summary-line"><span>Brigada</span><strong id="rs-brigada"></strong></div>
     <div class="summary-line"><span>Contratista</span><strong id="rs-contratista"></strong></div>
     <div class="summary-line"><span>Barrio</span><strong id="rs-barrio"></strong></div>
+    <div class="summary-line"><span>Tarea</span><strong id="rs-tarea"></strong></div>
     <div class="summary-line"><span>Inspector</span><strong id="rs-inspector"></strong></div>
   </div>
   <div class="card" id="rs-tramos"></div>
@@ -272,7 +245,6 @@
     <div class="summary-line"><span>Sacos</span><strong id="rs-sacos"></strong></div>
   </div>
 
-  <!-- CAJA OBSERVACIONES CON 2 SUBCONJUNTOS -->
   <div class="obs-box">
     <label style="margin-top:0;">Observaciones</label>
     <div id="rs-justificar" style="margin-bottom:12px;"></div>
@@ -281,7 +253,8 @@
   </div>
 
   <button class="btn secondary" onclick="volverFormulario()">Volver</button>
-  <button class="btn" id="btn-confirmar-cierre" onclick="confirmarYExportar()">🖨️ Imprimir PDF y Cerrar</button>
+  <button class="btn wa" onclick="compartirPDFWhatsApp()">📲 Compartir por WhatsApp</button>
+  <button class="btn" id="btn-confirmar-cierre" onclick="confirmarYExportar()">🖨️ Generar PDF y Cerrar</button>
 </div>
 
 <!-- ==================== MODALES ==================== -->
@@ -319,7 +292,6 @@
   <div class="modal">
     <button class="modal-close" onclick="cerrarModal('modal-formulario')">✕</button>
     <h3>Actividades del día</h3>
-
     <label>1. Personal</label>
     <select id="form-personal" onchange="toggleFormFields()">
       <option value="">Selecciona...</option>
@@ -327,26 +299,21 @@
       <option value="3">3 personas</option>
       <option value="4">4 personas</option>
     </select>
-
     <div id="form-tramos-section" style="display:none;">
       <label>2. Tramos (separados por coma)</label>
       <input type="text" id="form-tramos" placeholder="123, 456, 789">
       <label>3. ML total (sin límite)</label>
       <input type="number" id="form-ml" min="0" step="1" placeholder="75">
     </div>
-
     <div id="form-campos-activos">
       <label>4. Sacos</label>
       <input type="number" id="form-sacos" min="0" step="1" placeholder="0">
-
       <label>5. Tapas</label>
       <div id="form-tapas-lista"></div>
       <button class="btn secondary small" onclick="agregarTapaFormulario()">+ Agregar tapa</button>
-
       <label>6. Resane</label>
       <input type="number" id="form-resane" min="0" max="20" step="1" placeholder="0">
     </div>
-
     <label>7. Inspector</label>
     <select id="form-inspector">
       <option value="">Selecciona...</option>
@@ -356,7 +323,6 @@
       <option>Armando Pájaro</option>
       <option>Eider Mina</option>
     </select>
-
     <button class="btn" onclick="confirmarFormulario()">Confirmar</button>
   </div>
 </div>
@@ -374,11 +340,41 @@
   </div>
 </div>
 
+<!-- Cámara -->
+<div class="overlay" id="ov-camara" style="z-index:70;">
+  <div class="modal" style="padding:12px;">
+    <button class="modal-close" onclick="camCerrar()">✕</button>
+    <h3 style="margin-bottom:10px;">📷 Foto del hito</h3>
+    <video id="cv" playsinline muted autoplay></video>
+    <button class="btn" onclick="camCapturar()" style="margin-top:12px;">Capturar</button>
+    <button class="btn secondary" onclick="camCerrar()">Cancelar</button>
+  </div>
+</div>
+
+<!-- Pregunta foto opcional -->
+<div class="overlay" id="ov-foto-opcional">
+  <div class="modal">
+    <h3>📷 Foto del hito</h3>
+    <p style="color:var(--sub);font-size:14px;margin-bottom:10px;">¿Añadir una foto a este hito?</p>
+    <button class="btn" onclick="fotoOpcionalAceptar()">📷 Añadir foto</button>
+    <button class="btn secondary" onclick="fotoOpcionalRechazar()">Continuar sin foto</button>
+  </div>
+</div>
+
+<!-- Candado multi-pestaña -->
+<div class="overlay" id="ov-lock" style="z-index:80;">
+  <div class="modal">
+    <h3>App abierta en otra pestaña</h3>
+    <p>Para evitar registros duplicados, usa solo una pestaña. Cierra esta y continúa en la otra.</p>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 /* ==================== CONFIG ==================== */
 const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfERpt4S-r5oDgoAsGMDFYq-RdhOiFsszFjjPTnA_Utm3ZSVQ/formResponse";
+const API = "https://script.google.com/macros/s/AKfycbwDy1V9_-gn0p4fNwVFnQJKJgYewW5ZfjmkRJpV8ckUwXzXWExAIgbuw0x-dUXORV4T/exec";
 const META_ML = 140;
 const HORAS_BASE = 7;
 const RANGO_MIN = 120;
@@ -387,8 +383,10 @@ const ML_MAX_TRAMO = 60;
 const SACOS_POR_M3 = 40;
 const SYNC_QUEUE_KEY = "mtto_manual_sync_v1";
 const STATE_KEY = "mtto_manual_state_v1";
+const VERIF_PEND_KEY = "mtto_manual_verif_pend_v1";
+const VERIF_OK_KEY = "mtto_manual_verif_ok_v1";
+const TAB_KEY = "mtto_manual_tab_v1";
 
-/* ==================== INSPECTORES ==================== */
 const INSPECTORES = {
   'ML': 'Marlon Ledezma',
   'LD': 'Luis Díaz',
@@ -400,13 +398,13 @@ const INSPECTORES = {
 /* ==================== ESTADO ==================== */
 let STATE = {
   brigada:null, contratista:null, barrio:null, modo:null, gps:null,
+  idTarea:"", tareaNombre:"", tareasDisponibles:[],
   horaInicio:null, horaFin:null, inspector:null,
   tramos:[], novedades:[], cerrada:false,
   actividadCount:0, bitacoraInterna:"",
   cierre:{sacos:0, tapas:[], resane:0, personal:null, obs:'', tramosManuales:'', mlManual:0}
 };
 
-/* ==================== VARIABLES TEMPORALES ==================== */
 let tempApto=null, tramoACerrar=null, tempRegresa=null;
 let tapasFormulario=[], tapasInspector=[];
 let formularioConTramos=false;
@@ -417,6 +415,33 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function capitalizar(s){if(!s)return s;return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();}
 function nowISO(){return new Date().toISOString();}
 function fmtHora(iso){const d=new Date(iso);return d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function generarActionId_(){return (crypto.randomUUID?crypto.randomUUID():"a"+Date.now().toString(36)+Math.random().toString(36).slice(2,10));}
+
+/* ==================== TAB-LOCK ==================== */
+const TAB_ID = sessionStorage.getItem("mtto_manual_tab_id") || generarActionId_();
+sessionStorage.setItem("mtto_manual_tab_id", TAB_ID);
+setInterval(() => {
+  try {
+    const t = JSON.parse(localStorage.getItem(TAB_KEY) || "null");
+    const lockEl = document.getElementById('ov-lock');
+    if(!lockEl) return;
+    if (t && t.id !== TAB_ID && Date.now() - t.ts < 8000) {
+      lockEl.classList.add('active');
+    } else {
+      lockEl.classList.remove('active');
+      localStorage.setItem(TAB_KEY, JSON.stringify({ id: TAB_ID, ts: Date.now() }));
+    }
+  } catch(e) {}
+}, 3000);
+
+/* ==================== PROTECCIONES ==================== */
+history.pushState(null, "", location.href);
+addEventListener("popstate", () => { history.pushState(null, "", location.href); toast("Usa los botones de la app"); });
+addEventListener("beforeunload", e => {
+  if (STATE && STATE.horaInicio && !STATE.cerrada) { e.preventDefault(); e.returnValue = ""; }
+});
+document.addEventListener("contextmenu", e => e.preventDefault());
 
 /* ==================== GPS ==================== */
 function getGPS(){
@@ -428,42 +453,24 @@ function getGPS(){
     );
   });
 }
-
 async function reverseGeocode(gps){
   if(!gps)return "";
   try{
-    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${gps.lat}&lon=${gps.lng}&zoom=18&addressdetails=1`,{
-      headers:{'Accept-Language':'es'}
-    });
+    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${gps.lat}&lon=${gps.lng}&zoom=18&addressdetails=1`,{headers:{'Accept-Language':'es'}});
     const d=await r.json();
     const a=d.address||{};
     return a.neighbourhood||a.suburb||a.quarter||a.residential||a.city_district||a.hamlet||a.village||"";
-  }catch(e){
-    return "";
-  }
+  }catch(e){return "";}
 }
-
 function abreviarVia(nombre){
   return nombre
-    .replace(/^Calle\s+/i, "Cll ")
-    .replace(/^Carrera\s+/i, "Cra ")
-    .replace(/^Avenida Calle\s+/i, "Av Cll ")
-    .replace(/^Avenida Carrera\s+/i, "Av Cra ")
-    .replace(/^Avenida\s+/i, "Av ")
-    .replace(/^Diagonal\s+/i, "Diag ")
-    .replace(/^Transversal\s+/i, "Trans ")
-    .replace(/^Circular\s+/i, "Circ ");
+    .replace(/^Calle\s+/i, "Cll ").replace(/^Carrera\s+/i, "Cra ")
+    .replace(/^Avenida Calle\s+/i, "Av Cll ").replace(/^Avenida Carrera\s+/i, "Av Cra ")
+    .replace(/^Avenida\s+/i, "Av ").replace(/^Diagonal\s+/i, "Diag ")
+    .replace(/^Transversal\s+/i, "Trans ").replace(/^Circular\s+/i, "Circ ");
 }
-
-/* ==================== CADENA DE RESOLUCIÓN DE DIRECCIÓN ====================
-   Nivel 1: vía + número de casa (Nominatim)
-   Nivel 2: cruce de calles más cercano (Overpass), cuando no hay número
-   Nivel 3: coordenadas GPS crudas, si no hay ninguna vía cercana
-   Con caché por coordenada redondeada (~10m) para no repetir consultas. */
 const direccionCache={};
-
 function claveCache(gps){return `${gps.lat.toFixed(4)},${gps.lng.toFixed(4)}`;}
-
 async function obtenerCruceOverpass(gps,viaPrincipal){
   try{
     const query=`[out:json][timeout:5];way(around:40,${gps.lat},${gps.lng})[highway][name];out tags;`;
@@ -475,12 +482,10 @@ async function obtenerCruceOverpass(gps,viaPrincipal){
     return '';
   }catch(e){return '';}
 }
-
 async function resolverDireccion(gps){
   if(!gps) return '';
   const key=claveCache(gps);
   if(direccionCache[key]!==undefined) return direccionCache[key];
-
   let resultado='';
   try{
     const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${gps.lat}&lon=${gps.lng}&format=json&addressdetails=1&accept-language=es`);
@@ -491,43 +496,21 @@ async function resolverDireccion(gps){
     const barrio=a.suburb||a.neighbourhood||a.quarter||a.city_district||a.village||"";
     if(road){
       const roadAbbr=abreviarVia(road);
-      if(num){
-        resultado=`${roadAbbr} # ${num}`;
-      } else {
-        const cruce=await obtenerCruceOverpass(gps,roadAbbr);
-        resultado=cruce||(barrio?`${roadAbbr}, ${barrio}`:roadAbbr);
-      }
+      if(num){resultado=`${roadAbbr} # ${num}`;}
+      else{const cruce=await obtenerCruceOverpass(gps,roadAbbr);resultado=cruce||(barrio?`${roadAbbr}, ${barrio}`:roadAbbr);}
     }
   }catch(e){}
-
-  if(!resultado){
-    resultado=`${gps.lat.toFixed(4)},${gps.lng.toFixed(4)}`; // Nivel 3: respaldo final
-  }
-
+  if(!resultado){resultado=`${gps.lat.toFixed(4)},${gps.lng.toFixed(4)}`;}
   direccionCache[key]=resultado;
   return resultado;
 }
-
-/* ==================== PREFETCH DE UBICACIÓN (dispara antes del tap) ==================== */
 let gpsPrefetch=null;
 function prefetchUbicacion(){
-  gpsPrefetch=(async()=>{
-    const gps=await getGPS();
-    const dir=await resolverDireccion(gps);
-    return {gps,dir};
-  })();
+  gpsPrefetch=(async()=>{const gps=await getGPS();const dir=await resolverDireccion(gps);return {gps,dir};})();
 }
-
 function withTimeout(promise,ms,fallback){
-  return Promise.race([
-    promise,
-    new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))
-  ]);
+  return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);
 }
-
-/* Devuelve {gps,dir} para armar un hito. Si el prefetch no alcanzó a resolver
-   en 3s, entrega lo que haya (dir="Resolviendo...") y actualiza el texto ya
-   guardado en la bitácora cuando la dirección real llegue (no bloqueante). */
 async function obtenerUbicacionParaHito(numActividad){
   const promesa=gpsPrefetch||(async()=>{const gps=await getGPS();const dir=await resolverDireccion(gps);return{gps,dir};})();
   const resultado=await withTimeout(promesa,3000,null);
@@ -545,62 +528,113 @@ async function obtenerUbicacionParaHito(numActividad){
   return {gps,dir:'Resolviendo...'};
 }
 
-async function getDireccion(gps){return resolverDireccion(gps);}
+/* ==================== FOTOS ==================== */
+let CAM_STREAM=null, CAM_FOLIO_PENDIENTE=null, CAM_TITULO_PENDIENTE="", FOTO_OPCIONAL_RESOLVE=null;
+
+function idbOpen_(){return new Promise((res,rej)=>{const r=indexedDB.open("mtto_manual",1);r.onupgradeneeded=()=>r.result.createObjectStore("fotos",{keyPath:"folio"});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+async function idbGuardarFoto_(o){try{const db=await idbOpen_();return await new Promise(r=>{const tx=db.transaction("fotos","readwrite");tx.objectStore("fotos").put(o);tx.oncomplete=()=>r(true);tx.onerror=()=>r(false);});}catch(e){return false;}}
+async function idbTodasFotos_(){try{const db=await idbOpen_();return await new Promise(r=>{const q=db.transaction("fotos").objectStore("fotos").getAll();q.onsuccess=()=>r(q.result||[]);q.onerror=()=>r([]);});}catch(e){return[];}}
+async function idbLimpiarFotos_(){try{const db=await idbOpen_();await new Promise(r=>{const tx=db.transaction("fotos","readwrite");tx.objectStore("fotos").clear();tx.oncomplete=()=>r();tx.onerror=()=>r();});}catch(e){}}
+
+async function camAbrir(folio,titulo){
+  CAM_FOLIO_PENDIENTE=folio; CAM_TITULO_PENDIENTE=titulo||"";
+  document.getElementById('ov-foto-opcional').classList.remove('active');
+  document.getElementById('ov-camara').classList.add('active');
+  try{
+    CAM_STREAM=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1920},height:{ideal:1080}},audio:false});
+    const v=document.getElementById('cv');v.srcObject=CAM_STREAM;await v.play();
+  }catch(e){camCerrar();toast("No se pudo abrir la cámara");}
+}
+function camCerrar(){if(CAM_STREAM){CAM_STREAM.getTracks().forEach(t=>t.stop());CAM_STREAM=null;}document.getElementById('ov-camara').classList.remove('active');}
+async function camCapturar(){
+  const v=document.getElementById('cv');if(!v.videoWidth||!CAM_FOLIO_PENDIENTE)return;
+  const c=document.createElement("canvas");c.width=900;c.height=1080;
+  const x=c.getContext("2d"),s=Math.min(v.videoWidth,v.videoHeight);
+  x.fillStyle="#fff";x.fillRect(0,0,900,1080);
+  x.drawImage(v,(v.videoWidth-s)/2,(v.videoHeight-s)/2,s,s,45,45,810,810);
+  x.fillStyle="#111";x.font="600 30px system-ui,sans-serif";
+  x.fillText((CAM_TITULO_PENDIENTE||"").toUpperCase(),45,910);
+  x.font="800 64px system-ui,sans-serif";x.fillText(CAM_FOLIO_PENDIENTE,45,985);
+  x.fillStyle="#555";x.font="500 26px system-ui,sans-serif";
+  const meta=(STATE.brigada||"")+" · "+(STATE.barrio||"")+" · "+new Date().toLocaleString("es-CO",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+  x.fillText(meta,45,1040);
+  const dataUrl=c.toDataURL("image/jpeg",.82);
+  await idbGuardarFoto_({folio:CAM_FOLIO_PENDIENTE,titulo:CAM_TITULO_PENDIENTE||"",brigada:STATE.brigada||"",barrio:STATE.barrio||"",dataUrl,at:new Date().toISOString()});
+  camCerrar();toast("✅ Foto guardada");
+}
+function preguntarFotoOpcional(folio,titulo){
+  return new Promise(resolve=>{
+    FOTO_OPCIONAL_RESOLVE=resolve;
+    window.FOLIO_FOTO_ACTUAL=folio; window.TITULO_FOTO_ACTUAL=titulo;
+    document.getElementById('ov-foto-opcional').classList.add('active');
+  });
+}
+async function fotoOpcionalAceptar(){
+  document.getElementById('ov-foto-opcional').classList.remove('active');
+  await camAbrir(window.FOLIO_FOTO_ACTUAL,window.TITULO_FOTO_ACTUAL);
+  if(FOTO_OPCIONAL_RESOLVE){FOTO_OPCIONAL_RESOLVE(true);FOTO_OPCIONAL_RESOLVE=null;}
+}
+function fotoOpcionalRechazar(){
+  document.getElementById('ov-foto-opcional').classList.remove('active');
+  if(FOTO_OPCIONAL_RESOLVE){FOTO_OPCIONAL_RESOLVE(false);FOTO_OPCIONAL_RESOLVE=null;}
+}
+async function compartirWhatsApp(texto,folio){
+  try{
+    const fotos=await idbTodasFotos_();
+    const foto=fotos.find(f=>f.folio===folio);
+    if(foto&&navigator.canShare){
+      const blob=await(await fetch(foto.dataUrl)).blob();
+      const file=new File([blob],folio+".jpg",{type:"image/jpeg"});
+      if(navigator.canShare({files:[file]})){await navigator.share({files:[file],text:texto,title:folio});return;}
+    }
+    if(navigator.share){await navigator.share({text:texto,title:folio});return;}
+  }catch(e){if(e.name==="AbortError")return;}
+  window.open("https://wa.me/?text="+encodeURIComponent(texto),"_blank");
+}
 
 /* ==================== DETECCIÓN DE INSPECTOR ==================== */
 function detectarInspector(texto){
   const match = texto.match(/^(\d{1,2}\/\d{1,2}\/\d{4})\s+([DN])\s+([A-Z]{2})$/);
   if(match){
-    const fecha = match[1];
-    const jornada = match[2] === 'D' ? 'Diurno' : 'Nocturno';
     const iniciales = match[3];
     if(INSPECTORES[iniciales]){
-      return {fecha, jornada, iniciales, nombre: INSPECTORES[iniciales]};
+      return {fecha:match[1], jornada:match[2]==='D'?'Diurno':'Nocturno', iniciales, nombre:INSPECTORES[iniciales]};
     }
   }
   return null;
 }
 
-/* ==================== PERSISTENCIA DE ESTADO ==================== */
-function guardarEstado(){
-  try{localStorage.setItem(STATE_KEY,JSON.stringify(STATE));}catch(e){}
-}
-
+/* ==================== PERSISTENCIA ==================== */
+function guardarEstado(){try{localStorage.setItem(STATE_KEY,JSON.stringify(STATE));}catch(e){}}
 function cargarEstado(){
   try{
     const data=localStorage.getItem(STATE_KEY);
-    if(data){
-      const saved=JSON.parse(data);
-      if(!saved.cerrada)STATE=saved;
-    }
+    if(data){const saved=JSON.parse(data);if(!saved.cerrada)STATE=saved;}
   }catch(e){}
 }
 
-/* ==================== COLA DE SINCRONIZACIÓN OFFLINE + ENVÍO ==================== */
+/* ==================== COLA + VERIFICACIÓN ==================== */
 function cargarCola(){try{return JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY)||'[]');}catch(e){return[];}}
 function guardarCola(c){try{localStorage.setItem(SYNC_QUEUE_KEY,JSON.stringify(c));}catch(e){}}
 function encolarPayload(p){const c=cargarCola();c.push(p);guardarCola(c);actualizarEstadoSync();}
 function actualizarEstadoSync(){
-  const el=document.getElementById('sync-status');
-  if(!el)return;
+  const el=document.getElementById('sync-status');if(!el)return;
   const c=cargarCola();
   if(c.length===0){el.textContent='● Listo';el.style.color='var(--good)';}
   else{el.textContent=`● ${c.length} pendiente(s)`;el.style.color='var(--warn)';}
 }
 async function procesarCola(){
-  const c=cargarCola();
-  if(!c.length)return;
+  const c=cargarCola();if(!c.length)return;
   const rest=[];
-  for(const p of c){
-    try{await enviarPayload(p);}catch(e){rest.push(p);}
-  }
-  guardarCola(rest);
-  actualizarEstadoSync();
+  for(const p of c){try{await enviarPayload(p);}catch(e){rest.push(p);}}
+  guardarCola(rest);actualizarEstadoSync();
 }
 async function enviarPayload(p){
   const fd=new URLSearchParams();
   fd.append('entry.698566237',p.tipo||'');
-  fd.append('entry.759456156',JSON.stringify(p.datos||{}));
+  const datos=Object.assign({},p.datos||{});
+  if(p.actionId&&!datos.actionId)datos.actionId=p.actionId;
+  fd.append('entry.759456156',JSON.stringify(datos));
   fd.append('entry.1958505050',p.brigada||'');
   fd.append('entry.1438075125',p.contratista||'');
   fd.append('entry.1542290425',p.barrio||'');
@@ -608,64 +642,155 @@ async function enviarPayload(p){
   await fetch(FORM_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()});
   return{ok:true};
 }
+async function enviarHitoRemoto(tipo,datos){
+  const actionId=generarActionId_();
+  const datosConId=Object.assign({},datos||{},{actionId});
+  const payload={tipo,actionId,datos:datosConId,brigada:STATE.brigada,contratista:STATE.contratista,barrio:STATE.barrio,inspector:STATE.inspector||''};
+  registrarParaVerificacion_(actionId,tipo);
+  if(!navigator.onLine){encolarPayload(payload);return;}
+  try{await enviarPayload(payload);actualizarEstadoSync();procesarCola();}
+  catch(e){encolarPayload(payload);}
+}
 
-/* Envía el hito ya mismo si hay red; si falla o no hay red, lo encola para reintento */
-async function enviarHitoRemoto(tipo, datos){
-  const payload = {tipo, datos, brigada: STATE.brigada, contratista: STATE.contratista, barrio: STATE.barrio, inspector: STATE.inspector || ''};
-  if(!navigator.onLine){ encolarPayload(payload); return; }
+function cargarPendientesVerificacion_(){try{return JSON.parse(localStorage.getItem(VERIF_PEND_KEY)||"[]");}catch(e){return[];}}
+function guardarPendientesVerificacion_(arr){try{localStorage.setItem(VERIF_PEND_KEY,JSON.stringify(arr));}catch(e){}}
+function cargarVerificados_(){try{return JSON.parse(localStorage.getItem(VERIF_OK_KEY)||"[]");}catch(e){return[];}}
+function guardarVerificados_(arr){try{localStorage.setItem(VERIF_OK_KEY,JSON.stringify(arr));}catch(e){}}
+function registrarParaVerificacion_(actionId,tipo){
+  const p=cargarPendientesVerificacion_();
+  p.push({actionId,tipo,at:new Date().toISOString()});
+  guardarPendientesVerificacion_(p.slice(-200));
+  actualizarEstadoVerificacion_(p.length);
+}
+function verificarActionId_(actionId){
+  return new Promise(resolve=>{
+    const cb="vfy_"+Date.now()+Math.floor(Math.random()*1e4);
+    const s=document.createElement("script");
+    let t=setTimeout(()=>{fin();resolve(false);},5000);
+    const fin=()=>{clearTimeout(t);try{delete window[cb];}catch(e){window[cb]=undefined;}s.remove();};
+    window[cb]=d=>{fin();resolve(!!(d&&d.ok&&d.recibido));};
+    s.onerror=()=>{fin();resolve(false);};
+    s.src=API+"?"+new URLSearchParams({action:"confirmarHitoRaw",actionId,callback:cb,_:Date.now()});
+    document.head.appendChild(s);
+  });
+}
+async function verificarEnviados_(){
+  if(!navigator.onLine)return;
+  const pendientes=cargarPendientesVerificacion_();
+  if(!pendientes.length){actualizarEstadoVerificacion_(0);return;}
+  const verificados=new Set(cargarVerificados_());
+  const sobrevivientes=[];let checked=0;
+  for(const item of pendientes){
+    if(verificados.has(item.actionId))continue;
+    if(checked>=10){sobrevivientes.push(item);continue;}
+    checked++;
+    const ok=await verificarActionId_(item.actionId);
+    if(ok){verificados.add(item.actionId);continue;}
+    sobrevivientes.push(item);
+  }
+  guardarVerificados_([...verificados].slice(-400));
+  guardarPendientesVerificacion_(sobrevivientes.slice(-200));
+  actualizarEstadoVerificacion_(sobrevivientes.length);
+}
+function actualizarEstadoVerificacion_(n){
+  const el=document.getElementById("verify-status");if(!el)return;
+  if(n===0){el.style.display="none";}
+  else{el.textContent=n+" registro(s) sin confirmar";el.style.display="block";}
+}
+
+/* ==================== CONSULTA DE TAREAS POR BRIGADA ==================== */
+function jsonp_(params,ms){
+  return new Promise((res,rej)=>{
+    const cb="mtto_"+Date.now()+Math.floor(Math.random()*1e4);
+    const s=document.createElement("script");let t;
+    const fin=()=>{clearTimeout(t);try{delete window[cb];}catch(e){window[cb]=undefined;}s.remove();};
+    window[cb]=d=>{fin();res(d);};
+    s.onerror=()=>{fin();rej(new Error("sin conexión"));};
+    s.src=API+"?"+new URLSearchParams({...params,callback:cb,_:Date.now()});
+    document.head.appendChild(s);
+    t=setTimeout(()=>{fin();rej(new Error("sin respuesta"));},ms||10000);
+  });
+}
+async function consultarTareasBrigada(brigada,contratista){
+  ocultarTareasBrigada_();
   try{
-    await enviarPayload(payload);
-    actualizarEstadoSync();
-    procesarCola();
+    const d=await jsonp_({action:"tareasPorPlaca",placa:brigada,contratista:contratista,fecha:new Date().toISOString().slice(0,10)});
+    if(d&&d.ok&&Array.isArray(d.tareas)&&d.tareas.length){
+      STATE.tareasDisponibles=d.tareas;
+      mostrarTareasBrigada_(d.tareas);
+      return;
+    }
+    STATE.tareasDisponibles=[];
   }catch(e){
-    encolarPayload(payload);
+    STATE.tareasDisponibles=[];
   }
 }
+function mostrarTareasBrigada_(tareas){
+  const wrap=document.getElementById('ap-tarea-wrap');
+  const sel=document.getElementById('ap-tarea');
+  const hint=document.getElementById('ap-tarea-hint');
+  sel.innerHTML='<option value="">Selecciona tarea...</option>'+tareas.map(t=>`<option value="${esc(t.idTarea)}">${esc(t.nombre||t.barrio)}</option>`).join('');
+  sel.onchange=()=>{
+    const t=tareas.find(x=>x.idTarea===sel.value);
+    STATE.idTarea=t?t.idTarea:"";
+    STATE.tareaNombre=t?(t.nombre||t.barrio):"";
+    if(t){
+      document.getElementById('ap-barrio').value=t.barrio||t.nombre;
+      STATE.barrio=t.barrio||t.nombre;
+    }
+    validarApertura();
+  };
+  hint.textContent=tareas.length===1?"Una sola tarea asignada":"Elige la tarea de hoy";
+  wrap.style.display='block';
+  if(tareas.length===1){sel.value=tareas[0].idTarea;sel.onchange();}
+}
+function ocultarTareasBrigada_(){const wrap=document.getElementById('ap-tarea-wrap');if(wrap)wrap.style.display='none';}
 
 /* ==================== APERTURA ==================== */
 function validarApertura(){
-  const ok=document.getElementById('ap-brigada').value&&document.getElementById('ap-barrio').value.trim();
-  document.getElementById('btn-abrir-jornada').disabled=!ok;
+  const brigadaOk=!!document.getElementById('ap-brigada').value;
+  const barrioOk=!!document.getElementById('ap-barrio').value.trim();
+  const hayTareas=STATE.tareasDisponibles&&STATE.tareasDisponibles.length>0;
+  const tareaOk=!hayTareas||!!STATE.idTarea;
+  document.getElementById('btn-abrir-jornada').disabled=!(brigadaOk&&barrioOk&&tareaOk);
 }
-
 document.getElementById('ap-brigada').addEventListener('change',e=>{
   const val=e.target.value;
-  if(val){const p=val.split('|');STATE.brigada=p[0];STATE.contratista=p[1];}else{STATE.brigada=null;STATE.contratista=null;}
+  if(val){
+    const p=val.split('|');STATE.brigada=p[0];STATE.contratista=p[1];
+    consultarTareasBrigada(STATE.brigada,STATE.contratista);
+  } else {
+    STATE.brigada=null;STATE.contratista=null;
+    STATE.idTarea="";STATE.tareaNombre="";STATE.tareasDisponibles=[];
+    ocultarTareasBrigada_();
+  }
   validarApertura();
 });
-
 document.getElementById('ap-barrio').addEventListener('input',e=>{
   const val=e.target.value.trim();
   const inspector=detectarInspector(val);
   const advertencia=document.getElementById('advertencia-inspector');
   const btn=document.getElementById('btn-abrir-jornada');
   if(inspector){
-    STATE.modo='inspector';
-    STATE.inspector=inspector.nombre;
+    STATE.modo='inspector';STATE.inspector=inspector.nombre;
     advertencia.textContent=`⚠️ MODO INSPECTOR ACTIVADO — ${inspector.nombre} (${inspector.jornada})`;
     advertencia.classList.add('show');
     btn.textContent='INICIAR MODO INSPECTOR';
   } else {
-    STATE.modo='operador';
-    STATE.inspector=null;
+    STATE.modo='operador';STATE.inspector=null;
     advertencia.classList.remove('show');
     btn.textContent='Iniciar jornada';
   }
   STATE.barrio=val;
   validarApertura();
 });
-
-function calcularTurno(horaISO){
-  const h=new Date(horaISO).getHours();
-  return (h>=6&&h<18)?'Diurno':'Nocturno'; // corte por defecto: 6:00 a 17:59 = Diurno
-}
+function calcularTurno(horaISO){const h=new Date(horaISO).getHours();return (h>=6&&h<18)?'Diurno':'Nocturno';}
 
 document.getElementById('btn-abrir-jornada').onclick=async function(){
   const barrioValor=document.getElementById('ap-barrio').value.trim();
   const inspector=detectarInspector(barrioValor);
   if(inspector){
-    STATE.modo='inspector';
-    STATE.inspector=inspector.nombre;
+    STATE.modo='inspector';STATE.inspector=inspector.nombre;
     const brigadaLimpia=STATE.brigada.replace(/\s+/g,'');
     document.getElementById('inspector-id').textContent=`${brigadaLimpia}|${inspector.fecha}|${inspector.jornada}|${inspector.iniciales}`;
     document.getElementById('screen-apertura').classList.remove('active');
@@ -678,21 +803,21 @@ document.getElementById('btn-abrir-jornada').onclick=async function(){
     document.getElementById('screen-apertura').classList.remove('active');
     document.getElementById('screen-dashboard').classList.add('active');
     renderDashboard();
-    enviarHitoRemoto('jornadaInicio', {
-      fecha: STATE.horaInicio ? new Date(STATE.horaInicio).toLocaleDateString('es-CO') : '',
-      horaInicio: STATE.horaInicio || '',
-      brigada: STATE.brigada || '',
-      contratista: STATE.contratista || '',
-      barrio: STATE.barrio || '',
-      turno: STATE.turno || ''
+    enviarHitoRemoto('jornadaInicio',{
+      fecha:STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'',
+      horaInicio:STATE.horaInicio||'',
+      brigada:STATE.brigada||'',
+      contratista:STATE.contratista||'',
+      barrio:STATE.barrio||'',
+      idTarea:STATE.idTarea||'',
+      tareaNombre:STATE.tareaNombre||'',
+      turno:calcularTurno(STATE.horaInicio)
     });
-
-    // Actividad #1: Apertura de jornada
     const turno=calcularTurno(STATE.horaInicio);
     const gps=STATE.gps||await getGPS();
     const dir=await resolverDireccion(gps);
     const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-    registrarHito(`*Apertura de jornada*\n[Contratista: ${STATE.contratista}]\n[Turno: ${turno}]\n[Hora: ${fmtHora(STATE.horaInicio)}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
+    registrarHito(`*Apertura de jornada*\n[Contratista: ${STATE.contratista}]\n[Tarea: ${STATE.tareaNombre||"—"}]\n[Turno: ${turno}]\n[Hora: ${fmtHora(STATE.horaInicio)}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"AJ");
   }
 };
 
@@ -704,8 +829,7 @@ async function initGPSApertura(){
   const barrio=await reverseGeocode(gps);
   const val=document.getElementById('ap-barrio').value;
   if(barrio&&!detectarInspector(val)){
-    document.getElementById('ap-barrio').value=barrio;
-    STATE.barrio=barrio;
+    document.getElementById('ap-barrio').value=barrio;STATE.barrio=barrio;
     document.getElementById('gps-status').textContent="✓ auto";
   } else {
     document.getElementById('gps-status').textContent="manual";
@@ -713,24 +837,21 @@ async function initGPSApertura(){
   validarApertura();
 }
 
-// Inicializar GPS cuando el DOM esté listo
 window.addEventListener('load',()=>{
   initGPSApertura();
   cargarEstado();
   if(STATE.horaInicio&&!STATE.cerrada){
     document.getElementById('screen-apertura').classList.remove('active');
-    if(STATE.modo==='inspector'){
-      document.getElementById('screen-inspector').classList.add('active');
-    }else{
-      document.getElementById('screen-dashboard').classList.add('active');
-      renderDashboard();
-    }
+    if(STATE.modo==='inspector'){document.getElementById('screen-inspector').classList.add('active');}
+    else{document.getElementById('screen-dashboard').classList.add('active');renderDashboard();}
   }
   actualizarEstadoSync();
-  if(navigator.onLine)procesarCola();
+  if(navigator.onLine)procesarCola().then(()=>verificarEnviados_());
+  setTimeout(()=>verificarEnviados_(),3000);
+  setInterval(()=>verificarEnviados_(),5*60*1000);
 });
 
-/* ==================== DASHBOARD RENDER ==================== */
+/* ==================== DASHBOARD ==================== */
 function renderDashboard(){
   const box=document.getElementById('tramo-abierto-box');
   const sin=document.getElementById('box-sin-tramo');
@@ -744,45 +865,34 @@ function renderDashboard(){
     box.innerHTML="";sin.style.display="grid";
   }
 }
+function calcularMLTotal(){return STATE.tramos.filter(t=>t.cierre&&t.cierre.apto==="SI").reduce((s,t)=>s+(Number(t.cierre.ml)||0),0);}
+function calcularHorasNoJust(ml){const horasJust=(ml*HORAS_BASE)/META_ML;return Math.max(0,HORAS_BASE-horasJust).toFixed(1);}
 
-/* ==================== CÁLCULOS ==================== */
-function calcularMLTotal(){
-  return STATE.tramos.filter(t=>t.cierre&&t.cierre.apto==="SI").reduce((s,t)=>s+(Number(t.cierre.ml)||0),0);
-}
-
-function calcularHorasNoJust(ml){
-  const horasJust=(ml*HORAS_BASE)/META_ML;
-  return Math.max(0,HORAS_BASE-horasJust).toFixed(1);
-}
-
-/* ==================== BITÁCORA ====================
-   Encabezado va UNA sola vez en la bitácora acumulada (primer hito del día).
-   Cada hito adicional entra sin encabezado repetido.
-   El portapapeles de cada hito individual (hito suelto) SÍ conserva su encabezado completo,
-   con una línea en blanco entre encabezado y cuerpo. */
+/* ==================== BITÁCORA ==================== */
 function generarEncabezado(){
   const brigadaLimpia=STATE.brigada?STATE.brigada.replace(/\s+/g,''):'';
   const fecha=STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'';
   const barrio=STATE.barrio?STATE.barrio.toUpperCase():'';
   return `#_Mtto_Manual\n${brigadaLimpia}|${fecha}|${barrio}`;
 }
-
-function registrarHito(bloqueTexto){
+async function registrarHito(bloqueTexto,sigla){
   STATE.actividadCount++;
   const enc=generarEncabezado();
   const bloque=bloqueTexto.replace('[Actividad del dia #; X]',`[Actividad del dia #; ${STATE.actividadCount}]`);
-  const completo=enc+'\n\n'+bloque; // hito suelto: encabezado + línea en blanco + cuerpo (va al portapapeles)
-
-  if(!STATE.bitacoraInterna){
-    STATE.bitacoraInterna = enc+'\n\n'+bloque; // primer hito: encabezado + bloque
-  } else {
-    STATE.bitacoraInterna += '\n\n'+bloque; // resto: solo el bloque, sin encabezado repetido
-  }
-
+  const completo=enc+'\n\n'+bloque;
+  if(!STATE.bitacoraInterna){STATE.bitacoraInterna=enc+'\n\n'+bloque;}
+  else{STATE.bitacoraInterna+='\n\n'+bloque;}
   guardarEstado();
   copiarAlPortapapeles(completo);
+  const folio=(STATE.brigada||"XX").replace(/\s+/g,"")+"-"+(sigla||"HT")+"-"+String(STATE.actividadCount).padStart(2,"0");
+  const m=String(bloque||"").match(/\*([^*]+)\*/);
+  const titulo=m?m[1]:"Hito";
+  const conFoto=await preguntarFotoOpcional(folio,titulo);
+  if(conFoto){
+    toast("Compartiendo por WhatsApp...");
+    await compartirWhatsApp(completo,folio);
+  }
 }
-
 function copiarAlPortapapeles(texto){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(texto).then(()=>toast("✅ Copiado — pégalo en WhatsApp 📲")).catch(()=>fallbackCopy(texto));}
   else{fallbackCopy(texto);}
@@ -797,23 +907,21 @@ function fallbackCopy(texto){
 document.getElementById('nuevo-tramo-nombre').addEventListener('input',e=>{
   e.target.value=e.target.value.replace(/[^0-9,\s]/g,'');
   document.getElementById('btn-abrir-tramo').disabled=!e.target.value.trim();
-  if(e.target.value.length===1) prefetchUbicacion(); // primer carácter: dispara la ubicación de una vez
+  if(e.target.value.length===1) prefetchUbicacion();
 });
-
 async function abrirTramo(){
   const input=document.getElementById('nuevo-tramo-nombre').value;
   const nombres=input.split(',').map(t=>t.trim()).filter(t=>t.length>0);
   if(!nombres.length)return;
-  const numActividad=STATE.actividadCount+1;
-  const {gps,dir}=await obtenerUbicacionParaHito(numActividad);
+  const {gps,dir}=await obtenerUbicacionParaHito(STATE.actividadCount+1);
   const horaISO=nowISO();
   nombres.forEach(nombre=>{
     STATE.tramos.push({id:'t'+Date.now()+Math.random(),tramo:nombre,horaInicio:horaISO,gps,dir,cerrado:false,cierre:null});
   });
   guardarEstado();
   const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-  registrarHito(`*Apertura de tramos*\n[Tramos: ${nombres.join(', ')}]\n[Hora: ${fmtHora(horaISO)}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
-  enviarHitoRemoto('tramoInicio', {tramos: nombres, lat: gps?gps.lat:'', lng: gps?gps.lng:'', direccion: dir});
+  registrarHito(`*Apertura de tramos*\n[Tramos: ${nombres.join(', ')}]\n[Hora: ${fmtHora(horaISO)}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"AT");
+  enviarHitoRemoto('tramoInicio',{tramos:nombres,lat:gps?gps.lat:'',lng:gps?gps.lng:'',direccion:dir});
   document.getElementById('nuevo-tramo-nombre').value="";
   document.getElementById('btn-abrir-tramo').disabled=true;
   gpsPrefetch=null;
@@ -848,70 +956,50 @@ function activarBotonNO(){
 }
 document.getElementById('ct-ml').addEventListener('input',validarCierreTramo);
 document.getElementById('ct-obs').addEventListener('input',validarCierreTramo);
-
 function validarCierreTramo(){
-  const btn = document.getElementById('btn-confirmar-cierre-tramo');
-  const errEl = document.getElementById('ct-ml-error');
+  const btn=document.getElementById('btn-confirmar-cierre-tramo');
+  const errEl=document.getElementById('ct-ml-error');
   let ok=false;
   if(tempApto==='SI'){
-    const ml = Number(document.getElementById('ct-ml').value);
-    if(ml <= 0 || ml > ML_MAX_TRAMO){
-      errEl.classList.add('show');
-      ok = false;
-    } else {
-      errEl.classList.remove('show');
-      ok = true;
-    }
+    const ml=Number(document.getElementById('ct-ml').value);
+    if(ml<=0||ml>ML_MAX_TRAMO){errEl.classList.add('show');ok=false;}
+    else{errEl.classList.remove('show');ok=true;}
   } else if(tempApto==='NO'){
     errEl.classList.remove('show');
-    ok = document.getElementById('ct-obs').value.trim().length>0;
-  } else {
-    errEl.classList.remove('show');
-    ok = false;
-  }
-  btn.disabled = !ok;
+    ok=document.getElementById('ct-obs').value.trim().length>0;
+  } else {errEl.classList.remove('show');ok=false;}
+  btn.disabled=!ok;
 }
-
 async function confirmarCierreTramo(){
-  const btn=document.getElementById('btn-confirmar-cierre-tramo');
-  if(btn.disabled) return;
-  const tramo=STATE.tramos.find(t=>t.id===tramoACerrar);
-  if(!tramo)return;
-  btn.disabled=true; // bloqueo anti doble-toque
-
+  const btn=document.getElementById('btn-confirmar-cierre-tramo');if(btn.disabled)return;
+  const tramo=STATE.tramos.find(t=>t.id===tramoACerrar);if(!tramo)return;
+  btn.disabled=true;
   if(tempApto==='SI'){
-    const ml = Number(document.getElementById('ct-ml').value);
-    if(ml <= 0 || ml > ML_MAX_TRAMO){
-      toast(`⚠️ ML inválido (1 a ${ML_MAX_TRAMO})`);
-      btn.disabled=false;
-      return;
-    }
-    tramo.cierre={apto:'SI', ml, obs:''};
+    const ml=Number(document.getElementById('ct-ml').value);
+    if(ml<=0||ml>ML_MAX_TRAMO){toast(`⚠️ ML inválido (1 a ${ML_MAX_TRAMO})`);btn.disabled=false;return;}
+    tramo.cierre={apto:'SI',ml,obs:''};
   } else {
-    tramo.cierre={apto:'NO', ml:0, obs:capitalizar(document.getElementById('ct-obs').value.trim())};
+    tramo.cierre={apto:'NO',ml:0,obs:capitalizar(document.getElementById('ct-obs').value.trim())};
   }
-
   tramo.cerrado=true;tramo.horaFin=nowISO();
   guardarEstado();
   const {gps,dir}=await obtenerUbicacionParaHito(STATE.actividadCount+1);
   const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-  registrarHito(`*Cierre de tramo*\n[Tramo: ${tramo.tramo}]\n[Apto CCTV: ${tramo.cierre.apto}]\n${tramo.cierre.apto==='SI'?`[ML: ${tramo.cierre.ml}]`:`[Observación: ${tramo.cierre.obs}]`}\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
-  enviarHitoRemoto('tramoCierre', {tramo: tramo.tramo, aptoCCTV: tramo.cierre.apto, ml: tramo.cierre.ml, observacion: tramo.cierre.obs, lat: gps?gps.lat:'', lng: gps?gps.lng:'', direccion: dir});
+  registrarHito(`*Cierre de tramo*\n[Tramo: ${tramo.tramo}]\n[Apto CCTV: ${tramo.cierre.apto}]\n${tramo.cierre.apto==='SI'?`[ML: ${tramo.cierre.ml}]`:`[Observación: ${tramo.cierre.obs}]`}\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"CT");
+  enviarHitoRemoto('tramoCierre',{tramo:tramo.tramo,aptoCCTV:tramo.cierre.apto,ml:tramo.cierre.ml,observacion:tramo.cierre.obs,lat:gps?gps.lat:'',lng:gps?gps.lng:'',direccion:dir});
   gpsPrefetch=null;
   cerrarModal('modal-cierre-tramo');tramoACerrar=null;renderDashboard();
 }
 
-/* ==================== FUERZA MAYOR ====================
-   Fuerza mayor: solo confirmar (sin pedir motivo). Dispara la pregunta de
-   verificar actividades del día, igual que el resto del flujo de cierre. */
+/* ==================== FUERZA MAYOR ==================== */
 async function registrarFuerzaMayor(){
   if(!confirm("¿Registrar FUERZA MAYOR? Cerrará la jornada."))return;
   STATE.novedades.push({tipo:'Fuerza mayor',hora:nowISO()});
   guardarEstado();
   const {gps,dir}=await obtenerUbicacionParaHito(STATE.actividadCount+1);
   const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-  registrarHito(`*Novedad*\n[Tipo: Fuerza mayor]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
-  enviarHitoRemoto('novedad', {tipo:'Fuerza mayor', lat: gps?gps.lat:'', lng: gps?gps.lng:'', direccion: dir});
+  registrarHito(`*Novedad*\n[Tipo: Fuerza mayor]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"NV");
+  enviarHitoRemoto('novedad',{tipo:'Fuerza mayor',lat:gps?gps.lat:'',lng:gps?gps.lng:'',direccion:dir});
   gpsPrefetch=null;
   STATE.horaFin=nowISO();
   setTimeout(()=>preguntarVerificarActividades(),500);
@@ -924,20 +1012,18 @@ function seleccionarRegresa(val){
   document.getElementById('req-no').classList.toggle('sel',val==='NO');
   document.getElementById('btn-registrar-requerimiento').disabled=false;
 }
-
 async function registrarRequerimiento(){
   STATE.novedades.push({tipo:'Falta de requerimiento',regresa:tempRegresa,hora:nowISO()});
   guardarEstado();
   const {gps,dir}=await obtenerUbicacionParaHito(STATE.actividadCount+1);
   const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-  registrarHito(`*Novedad*\n[Tipo: Falta de requerimiento]\n[Regresa: ${tempRegresa}]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
-  enviarHitoRemoto('novedad', {tipo:'Falta de requerimiento', regresa: tempRegresa, lat: gps?gps.lat:'', lng: gps?gps.lng:'', direccion: dir});
+  registrarHito(`*Novedad*\n[Tipo: Falta de requerimiento]\n[Regresa: ${tempRegresa}]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"NV");
+  enviarHitoRemoto('novedad',{tipo:'Falta de requerimiento',regresa:tempRegresa,lat:gps?gps.lat:'',lng:gps?gps.lng:'',direccion:dir});
   gpsPrefetch=null;
   cerrarModal('modal-requerimiento');
   document.getElementById('req-si').classList.remove('sel');
   document.getElementById('req-no').classList.remove('sel');
-  const regresa=tempRegresa;
-  tempRegresa=null;
+  const regresa=tempRegresa;tempRegresa=null;
   document.getElementById('btn-registrar-requerimiento').disabled=true;
   if(regresa==='NO'){
     await cerrarTramosPorNoRegreso('Falta de requerimiento');
@@ -945,11 +1031,6 @@ async function registrarRequerimiento(){
     setTimeout(()=>preguntarVerificarActividades(),500);
   }
 }
-
-/* ==================== NO REGRESA: CIERRA TODOS LOS TRAMOS ABIERTOS ====================
-   En Manual puede haber varios tramos abiertos a la vez. Cuando el
-   requerimiento indica que la brigada no regresa, se cierran todos
-   automáticamente (NO apto, motivo = la novedad). */
 async function cerrarTramosPorNoRegreso(motivo){
   const abiertos=STATE.tramos.filter(t=>!t.cerrado);
   for(const tramo of abiertos){
@@ -958,8 +1039,8 @@ async function cerrarTramosPorNoRegreso(motivo){
     guardarEstado();
     const {gps,dir}=await obtenerUbicacionParaHito(STATE.actividadCount+1);
     const gpsText=gps?`${gps.lat},${gps.lng}`:'sin GPS';
-    registrarHito(`*Cierre de tramo*\n[Tramo: ${tramo.tramo}]\n[Apto CCTV: NO]\n[Observación: ${motivo}]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`);
-    enviarHitoRemoto('tramoCierre', {tramo: tramo.tramo, aptoCCTV: 'NO', ml: 0, observacion: motivo, lat: gps?gps.lat:'', lng: gps?gps.lng:'', direccion: dir});
+    registrarHito(`*Cierre de tramo*\n[Tramo: ${tramo.tramo}]\n[Apto CCTV: NO]\n[Observación: ${motivo}]\n[Hora: ${fmtHora(nowISO())}]\n[gps: ${gpsText}]\n[Dir: ${dir}]\n[Actividad del dia #; X]`,"CT");
+    enviarHitoRemoto('tramoCierre',{tramo:tramo.tramo,aptoCCTV:'NO',ml:0,observacion:motivo,lat:gps?gps.lat:'',lng:gps?gps.lng:'',direccion:dir});
     gpsPrefetch=null;
   }
   renderDashboard();
@@ -973,14 +1054,11 @@ function seleccionarNovedadInspector(btn,tipo){
   document.getElementById('insp-novedad-regresa').style.display=tipo==='Requerimiento'?'block':'none';
   if(tipo==='Fuerza mayor'){regresaInspectorActual='NO';}
 }
-
 function seleccionarRegresaInspector(val){
   regresaInspectorActual=val;
   document.getElementById('insp-nov-si').classList.toggle('sel',val==='SI');
   document.getElementById('insp-nov-no').classList.toggle('sel',val==='NO');
 }
-
-/* ==================== DIAGNÓSTICO INSPECTOR ==================== */
 function actualizarDiagnosticoInspector(){
   const ml=Number(document.getElementById('insp-ml').value)||0;
   const box=document.getElementById('insp-diagnostico');
@@ -1000,10 +1078,8 @@ function actualizarDiagnosticoInspector(){
 
 /* ==================== FLUJO DE CIERRE ==================== */
 function preguntarVerificarActividades(){abrirModal('modal-pregunta-verificar');}
-
 function mostrarFormularioActividades(conTramos){
-  formularioConTramos=conTramos;
-  tapasFormulario=[];
+  formularioConTramos=conTramos;tapasFormulario=[];
   document.getElementById('form-personal').value='';
   document.getElementById('form-tramos').value='';
   document.getElementById('form-ml').value='';
@@ -1015,7 +1091,6 @@ function mostrarFormularioActividades(conTramos){
   renderTapasFormulario();
   abrirModal('modal-formulario');
 }
-
 function toggleFormFields(){
   const personal=document.getElementById('form-personal').value;
   const campos=document.getElementById('form-campos-activos');
@@ -1023,13 +1098,9 @@ function toggleFormFields(){
     campos.classList.add('disabled-field');
     document.getElementById('form-sacos').value='0';
     document.getElementById('form-resane').value='0';
-    tapasFormulario=[];
-    renderTapasFormulario();
-  } else {
-    campos.classList.remove('disabled-field');
-  }
+    tapasFormulario=[];renderTapasFormulario();
+  } else {campos.classList.remove('disabled-field');}
 }
-
 function toggleInspectorFields(){
   const personal=document.getElementById('insp-personal').value;
   const campos=document.getElementById('insp-campos-activos');
@@ -1039,19 +1110,12 @@ function toggleInspectorFields(){
     document.getElementById('insp-ml').value='0';
     document.getElementById('insp-sacos').value='0';
     document.getElementById('insp-resane').value='0';
-    tapasInspector=[];
-    renderTapasInspector();
-  } else {
-    campos.classList.remove('disabled-field');
-  }
+    tapasInspector=[];renderTapasInspector();
+  } else {campos.classList.remove('disabled-field');}
 }
 
 /* ==================== TAPAS ==================== */
-function agregarTapaFormulario(){
-  if(tapasFormulario.length>=5){toast("Máximo 5");return;}
-  tapasFormulario.push({id:'tapa'+Date.now(),tipo:'',poliza:''});
-  renderTapasFormulario();
-}
+function agregarTapaFormulario(){if(tapasFormulario.length>=5){toast("Máximo 5");return;}tapasFormulario.push({id:'tapa'+Date.now(),tipo:'',poliza:''});renderTapasFormulario();}
 function eliminarTapaFormulario(id){tapasFormulario=tapasFormulario.filter(t=>t.id!==id);renderTapasFormulario();}
 function actualizarTapaFormulario(id,campo,valor){const t=tapasFormulario.find(x=>x.id===id);if(t){t[campo]=valor;}}
 function renderTapasFormulario(){
@@ -1059,12 +1123,7 @@ function renderTapasFormulario(){
   if(!tapasFormulario.length){lista.innerHTML='<div class="hint">No hay tapas</div>';return;}
   lista.innerHTML=tapasFormulario.map((t,i)=>`<div class="tapa-entry"><div class="entry-header"><span>Tapa #${i+1}</span><button class="entry-remove" onclick="eliminarTapaFormulario('${t.id}')">✕</button></div><div class="campo-grupo"><label>Tipo:</label><select onchange="actualizarTapaFormulario('${t.id}','tipo',this.value)"><option value="">Tipo...</option><option value="60x60" ${t.tipo==='60x60'?'selected':''}>60x60</option><option value="80x80" ${t.tipo==='80x80'?'selected':''}>80x80</option></select></div><div class="campo-grupo"><label>Póliza:</label><input type="text" placeholder="Solo números" value="${t.poliza}" oninput="actualizarTapaFormulario('${t.id}','poliza',this.value.replace(/[^0-9]/g,''))"></div></div>`).join('');
 }
-
-function agregarTapaInspector(){
-  if(tapasInspector.length>=5){toast("Máximo 5");return;}
-  tapasInspector.push({id:'tapaI'+Date.now(),tipo:'',poliza:''});
-  renderTapasInspector();
-}
+function agregarTapaInspector(){if(tapasInspector.length>=5){toast("Máximo 5");return;}tapasInspector.push({id:'tapaI'+Date.now(),tipo:'',poliza:''});renderTapasInspector();}
 function eliminarTapaInspector(id){tapasInspector=tapasInspector.filter(t=>t.id!==id);renderTapasInspector();}
 function actualizarTapaInspector(id,campo,valor){const t=tapasInspector.find(x=>x.id===id);if(t){t[campo]=valor;}}
 function renderTapasInspector(){
@@ -1073,33 +1132,23 @@ function renderTapasInspector(){
   lista.innerHTML=tapasInspector.map((t,i)=>`<div class="tapa-entry"><div class="entry-header"><span>Tapa #${i+1}</span><button class="entry-remove" onclick="eliminarTapaInspector('${t.id}')">✕</button></div><div class="campo-grupo"><label>Tipo:</label><select onchange="actualizarTapaInspector('${t.id}','tipo',this.value)"><option value="">Tipo...</option><option value="60x60" ${t.tipo==='60x60'?'selected':''}>60x60</option><option value="80x80" ${t.tipo==='80x80'?'selected':''}>80x80</option></select></div><div class="campo-grupo"><label>Póliza:</label><input type="text" placeholder="Solo números" value="${t.poliza}" oninput="actualizarTapaInspector('${t.id}','poliza',this.value.replace(/[^0-9]/g,''))"></div></div>`).join('');
 }
 
-/* ==================== CONFIRMAR FORMULARIO ====================
-   Ingreso manual: valida que ningún tramo escrito ya esté registrado
-   como ejecutado/cerrado en el sistema. */
+/* ==================== CONFIRMAR FORMULARIO ==================== */
 function confirmarFormulario(){
   const personal=document.getElementById('form-personal').value;
   const inspector=document.getElementById('form-inspector').value;
   if(!personal){toast('Selecciona personal');return;}
   if(!inspector){toast('Selecciona inspector');return;}
-
   if(formularioConTramos){
     const tramosManualesRaw=document.getElementById('form-tramos').value.trim();
     const tramosManualesArr=tramosManualesRaw.split(',').map(s=>s.trim()).filter(Boolean);
     const tramosEjecutados=STATE.tramos.filter(t=>t.cierre).map(t=>t.tramo);
     const duplicado=tramosManualesArr.find(t=>tramosEjecutados.includes(t));
-    if(duplicado){
-      toast(`⚠️ Tramo ${duplicado} ya está registrado como ejecutado`);
-      return;
-    }
+    if(duplicado){toast(`⚠️ Tramo ${duplicado} ya está registrado como ejecutado`);return;}
   }
-
   STATE.cierre.personal=Number(personal);
   STATE.inspector=inspector;
-
   if(personal==='0'){
-    STATE.cierre.sacos=0;
-    STATE.cierre.tapas=[];
-    STATE.cierre.resane=0;
+    STATE.cierre.sacos=0;STATE.cierre.tapas=[];STATE.cierre.resane=0;
   } else {
     const tapasInvalidas=tapasFormulario.filter(t=>!t.tipo||!t.poliza);
     if(tapasInvalidas.length){toast('Completa tipo y póliza de todas las tapas');return;}
@@ -1107,18 +1156,12 @@ function confirmarFormulario(){
     STATE.cierre.tapas=tapasFormulario;
     STATE.cierre.resane=Number(document.getElementById('form-resane').value)||0;
   }
-
   if(formularioConTramos){
     STATE.cierre.tramosManuales=document.getElementById('form-tramos').value.trim();
     STATE.cierre.mlManual=Number(document.getElementById('form-ml').value)||0;
   }
-
-  guardarEstado();
-  cerrarModal('modal-formulario');
-  irACierreJornada();
+  guardarEstado();cerrarModal('modal-formulario');irACierreJornada();
 }
-
-/* ==================== IR A CIERRE ==================== */
 function irACierreJornada(){
   STATE.horaFin=nowISO();
   document.getElementById('screen-dashboard').classList.remove('active');
@@ -1126,18 +1169,18 @@ function irACierreJornada(){
   renderResumen();
 }
 
-/* ==================== RESUMEN FINAL ==================== */
+/* ==================== RESUMEN ==================== */
 function renderResumen(){
   document.getElementById('rs-brigada').textContent=STATE.brigada;
   document.getElementById('rs-contratista').textContent=STATE.contratista;
   document.getElementById('rs-barrio').textContent=STATE.barrio;
+  document.getElementById('rs-tarea').textContent=STATE.tareaNombre||'—';
   document.getElementById('rs-inspector').textContent=STATE.inspector||'—';
   const mlSistema=calcularMLTotal();
   const mlTotal=mlSistema+STATE.cierre.mlManual;
   const horasNoJust=calcularHorasNoJust(mlTotal);
   document.getElementById('rs-ml').textContent=mlTotal+' ML';
   document.getElementById('rs-sacos').textContent=STATE.cierre.sacos+' sacos';
-
   const justificarBox=document.getElementById('rs-justificar');
   const novReq=STATE.novedades.filter(n=>n.tipo==='Falta de requerimiento').length;
   const novFuerza=STATE.novedades.filter(n=>n.tipo==='Fuerza mayor').length;
@@ -1148,7 +1191,6 @@ function renderResumen(){
   else if(mlTotal<RANGO_MIN){html='<div class="obs-diagnostico">📍 Revisar zona/ritmo — Horas por justificar: '+horasNoJust+' h<br><span style="font-size:12px;">Justifique en observaciones qué actividades se realizaron</span></div>';}
   else if(mlTotal>RANGO_MAX){html='<div class="obs-diagnostico">📈 Justificar exceso — '+(mlTotal-RANGO_MAX)+' ML<br><span style="font-size:12px;">Justifique por qué se lograron más ML en el mismo tiempo</span></div>';}
   justificarBox.innerHTML=html;
-
   const tramosBox=document.getElementById('rs-tramos');
   tramosBox.innerHTML='<div class="section-label">Tramos</div>';
   STATE.tramos.forEach(t=>{
@@ -1164,176 +1206,150 @@ function renderResumen(){
     tramosBox.appendChild(d);
   }
 }
-
-/* ==================== VOLVER ==================== */
 function volverFormulario(){
   document.getElementById('screen-cierre').classList.remove('active');
   preguntarVerificarActividades();
 }
 
-/* ==================== TEXTO DEL INFORME (misma fuente para PDF y portapapeles) ==================== */
+/* ==================== CONSTRUIR TEXTO ==================== */
 function construirTextoInformeCierre(){
   const mlSistema=calcularMLTotal();
   const mlTotal=mlSistema+STATE.cierre.mlManual;
   const fecha=STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'';
   let txt=`#_Mtto_Manual — Cierre de jornada\n`;
-  txt+=`Brigada: ${STATE.brigada}\nContratista: ${STATE.contratista}\nBarrio: ${STATE.barrio?STATE.barrio.toUpperCase():''}\nFecha: ${fecha}\nInspector: ${STATE.inspector||'—'}\n\n`;
+  txt+=`Brigada: ${STATE.brigada}\nContratista: ${STATE.contratista}\nBarrio: ${STATE.barrio?STATE.barrio.toUpperCase():''}\nTarea: ${STATE.tareaNombre||'—'}\nFecha: ${fecha}\nInspector: ${STATE.inspector||'—'}\n\n`;
   txt+=`ML total: ${mlTotal} ML\nSacos: ${STATE.cierre.sacos}\n`;
   txt+=`\nObservaciones:\n${STATE.cierre.obs||'Sin observaciones'}\n\n`;
   txt+=`Bitácora del día:\n${STATE.bitacoraInterna||'Sin registros'}`;
   return txt;
 }
 
-/* ==================== PDF ====================
-   Al confirmar el cierre: (1) bloquea el botón para evitar doble toque,
-   (2) copia al portapapeles el mismo texto que se usa para el informe,
-   (3) genera el PDF/impresión. */
+/* ==================== CIERRE + PDF ==================== */
 function confirmarYExportar(){
-  const btn=document.getElementById('btn-confirmar-cierre');
-  if(btn.disabled) return;
-
+  const btn=document.getElementById('btn-confirmar-cierre');if(btn.disabled)return;
   STATE.cierre.obs=document.getElementById('cierre-obs').value.trim();
   STATE.horaFin=STATE.horaFin||nowISO();
   guardarEstado();
-
   const mlSistema=calcularMLTotal();
   const mlManual=Number(STATE.cierre.mlManual)||0;
   const mlTotal=mlSistema+mlManual;
   const resumen=construirTextoInformeCierre();
-
   const datosCierre={
-    fecha: STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'',
-    horaInicio: STATE.horaInicio||'',
-    horaFin: STATE.horaFin||'',
-    brigada: STATE.brigada||'',
-    contratista: STATE.contratista||'',
-    barrio: STATE.barrio||'',
-    inspector: STATE.inspector||'',
-    personal: Number(STATE.cierre.personal)||0,
-
-    tramos: (STATE.tramos||[]).map(t=>({
-      tramo: t.tramo||'',
-      aptoCCTV: t.cierre&&t.cierre.apto ? t.cierre.apto : '',
-      ml: t.cierre&&t.cierre.ml ? Number(t.cierre.ml)||0 : 0,
-      observacion: t.cierre&&t.cierre.obs ? t.cierre.obs : '',
-      cerrado: !!t.cerrado
-    })),
-    tramosManuales: STATE.cierre.tramosManuales||'',
-
-    mlSistema: mlSistema,
-    mlManual: mlManual,
-    mlTotal: mlTotal,
-
-    sacos: Number(STATE.cierre.sacos)||0,
-    tapas: STATE.cierre.tapas||[],
-    resane: Number(STATE.cierre.resane)||0,
-
-    novedades: STATE.novedades||[],
-    observaciones: STATE.cierre.obs||'',
-    resumen: resumen
+    fecha:STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'',
+    horaInicio:STATE.horaInicio||'',horaFin:STATE.horaFin||'',
+    brigada:STATE.brigada||'',contratista:STATE.contratista||'',barrio:STATE.barrio||'',
+    idTarea:STATE.idTarea||'',tareaNombre:STATE.tareaNombre||'',
+    inspector:STATE.inspector||'',personal:Number(STATE.cierre.personal)||0,
+    tramos:(STATE.tramos||[]).map(t=>({tramo:t.tramo||'',aptoCCTV:t.cierre&&t.cierre.apto?t.cierre.apto:'',ml:t.cierre&&t.cierre.ml?Number(t.cierre.ml)||0:0,observacion:t.cierre&&t.cierre.obs?t.cierre.obs:'',cerrado:!!t.cerrado})),
+    tramosManuales:STATE.cierre.tramosManuales||'',
+    mlSistema,mlManual,mlTotal,
+    sacos:Number(STATE.cierre.sacos)||0,tapas:STATE.cierre.tapas||[],resane:Number(STATE.cierre.resane)||0,
+    novedades:STATE.novedades||[],observaciones:STATE.cierre.obs||'',resumen
   };
-
   btn.disabled=true;
   btn.textContent='✅ Confirmado — procesando...';
-
-  enviarHitoRemoto('jornadaCierre', datosCierre);
-
+  enviarHitoRemoto('jornadaCierre',datosCierre);
   copiarAlPortapapeles(resumen);
   generarPDFCierre();
 }
-
-function generarPDFCierre(){
+async function generarPDFCierre(){
   const mlSistema=calcularMLTotal();
   const mlTotal=mlSistema+STATE.cierre.mlManual;
   const horasNoJust=calcularHorasNoJust(mlTotal);
-  const fecha=STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString('es-CO'):'';
+  const fecha=STATE.horaInicio?new Date(STATE.horaInicio).toLocaleDateString("es-CO"):"";
   const tapas60=STATE.cierre.tapas.filter(t=>t.tipo==='60x60').length;
   const tapas80=STATE.cierre.tapas.filter(t=>t.tipo==='80x80').length;
   const novReq=STATE.novedades.filter(n=>n.tipo==='Falta de requerimiento').length;
   const novFuerza=STATE.novedades.filter(n=>n.tipo==='Fuerza mayor').length;
   let diagnostico='';
-  if(mlTotal>=RANGO_MIN&&mlTotal<=RANGO_MAX){diagnostico='✅ Meta cumplida';}
-  else if(mlTotal<RANGO_MIN&&novReq>0){diagnostico=`🔧 Atención elementos — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
-  else if(mlTotal<RANGO_MIN&&novFuerza>0){diagnostico=`ℹ️ Déficit justificable — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
-  else if(mlTotal<RANGO_MIN){diagnostico=`📍 Revisar zona/ritmo — Horas por justificar: ${horasNoJust} h<br><span style="font-size:11px;">Justifique en observaciones qué actividades se realizaron</span>`;}
-  else if(mlTotal>RANGO_MAX){diagnostico=`📈 Justificar exceso — ${mlTotal-RANGO_MAX} ML<br><span style="font-size:11px;">Justifique por qué se lograron más ML en el mismo tiempo</span>`;}
+  if(mlTotal>=RANGO_MIN&&mlTotal<=RANGO_MAX)diagnostico='Meta cumplida';
+  else if(mlTotal<RANGO_MIN&&novReq>0)diagnostico='Atención elementos — Justificar '+horasNoJust+' h';
+  else if(mlTotal<RANGO_MIN&&novFuerza>0)diagnostico='Déficit justificable — Justificar '+horasNoJust+' h';
+  else if(mlTotal<RANGO_MIN)diagnostico='Revisar zona/ritmo — Justificar '+horasNoJust+' h';
+  else if(mlTotal>RANGO_MAX)diagnostico='Justificar exceso — '+(mlTotal-RANGO_MAX)+' ML';
 
-  const contenido=`
-    <div style="font-family:Arial,sans-serif;color:#000;background:#fff;padding:20px;max-width:800px;margin:0 auto;">
-      <!-- ENCABEZADO -->
-      <div style="background:#1a2e1a;color:#fff;padding:15px;border-radius:8px;margin-bottom:10px;text-align:center;">
-        <h1 style="font-size:16px;font-weight:800;margin:0;">#_Mtto_Manual</h1>
-        <p style="font-size:11px;margin:5px 0 0;">Hoja de Cierre de Jornada</p>
-      </div>
+  const {jsPDF}=window.jspdf;
+  const W=105,H=210,M=8,U=W-2*M;
+  const d=new jsPDF({unit:"mm",format:[W,H]});
+  const C=[34,90,60],INK=[30,30,30],G=[110,110,110];
+  let y=0;
+  const T=(s,x,yy,sz,b,c)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(...(c||INK));d.text(String(s),x,yy);};
+  const R=(s,yy,sz,b,c)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);T(s,W-M-d.getTextWidth(String(s)),yy,sz,b,c);};
+  const band=(a,b)=>{d.setFillColor(...C);d.rect(0,0,W,16,"F");T(a,M,10,13,true,[255,255,255]);if(b)R(b,10,12,true,[255,255,255]);};
 
-      <!-- DATOS -->
-      <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Datos de la Jornada</div>
-        <div style="font-size:12px;color:#000;">Brigada: ${STATE.brigada}<br>Contratista: ${STATE.contratista}<br>Barrio: ${STATE.barrio?STATE.barrio.toUpperCase():''}<br>Fecha: ${fecha}<br>Personal: ${STATE.cierre.personal||'—'} personas<br>Inspector: ${STATE.inspector||'—'}</div>
-      </div>
+  band("CIERRE DE JORNADA · MANUAL",(STATE.brigada||"").toUpperCase());
+  y=24;
+  T(STATE.barrio||"",M,y,10,true);y+=5;
+  T((STATE.contratista||"")+" · "+(STATE.tareaNombre||"—")+" · "+fecha,M,y,7.5,false,G);y+=5;
+  T("Inspector: "+(STATE.inspector||"—"),M,y,7.5,false,G);y+=10;
+  T(mlTotal+" ML",M,y,22,true,C);y+=7;
+  T(STATE.tramos.length+" tramos · "+STATE.cierre.sacos+" sacos · "+STATE.cierre.resane+" resane",M,y,8.5,false,G);y+=9;
+  d.setDrawColor(210);d.line(M,y,W-M,y);y+=6;
+  T("Diagnóstico",M,y,10.5,true);y+=5.5;
+  d.splitTextToSize(diagnostico,U).forEach(l=>{T(l,M,y,9);y+=4.5;});
+  y+=4;T("Tramos",M,y,10.5,true);y+=5.5;
+  STATE.tramos.forEach(t=>{
+    if(y>H-30){d.addPage([W,H]);band("Tramos (cont.)");y=26;}
+    const o=t.cierre&&t.cierre.apto==="SI";
+    const col=o?[22,163,74]:[220,38,38];
+    d.setFillColor(...col);d.rect(M,y-4.5,1.5,10,"F");
+    T(t.tramo,M+4,y+1,11,true);R(o?"APTO · "+t.cierre.ml+" ML":"NO APTO",y+1,8.5,true,col);
+    if(t.cierre&&t.cierre.obs)T(d.splitTextToSize(t.cierre.obs,U-34)[0],M+4,y+5.5,7.5,false,G);
+    y+=12;
+  });
+  if((STATE.cierre.obs||"").trim()){
+    y+=4;T("Observaciones",M,y,10.5,true);y+=5;
+    d.splitTextToSize(STATE.cierre.obs.trim(),U).slice(0,6).forEach(l=>{T(l,M,y,9);y+=4.5;});
+  }
+  d.addPage([W,H]);band("Bitácora del día","");y=26;
+  const bloques=(STATE.bitacoraInterna||"Sin registros").split("\n");
+  bloques.forEach(l=>{
+    if(y>H-12){d.addPage([W,H]);band("Bitácora (cont.)");y=26;}
+    T(l,M,y,7.5);y+=3.8;
+  });
+  const fotos=await idbTodasFotos_();
+  if(fotos.length){
+    const grupos=[];let i=0;
+    while(i<fotos.length){const restantes=fotos.length-i;const k=restantes>4?4:restantes;grupos.push(fotos.slice(i,i+k));i+=k;}
+    grupos.forEach(g=>{
+      d.addPage([W,H]);band("Evidencias",fotos.length+" foto"+(fotos.length!==1?"s":""));
+      const cols=g.length===1?1:2,rows=Math.ceil(g.length/cols);
+      const top=22,gapX=5,gapY=7,availH=H-top-10;
+      const cellW=(U-gapX*(cols-1))/cols,cellH=(availH-gapY*(rows-1))/rows;
+      const imgW=Math.min(cellW,cellH/1.28),imgH=imgW*1.2;
+      g.forEach((f,j)=>{
+        const row=Math.floor(j/cols),col=j%cols;
+        const cx=M+col*(cellW+gapX)+cellW/2,cy=top+row*(cellH+gapY);
+        const x=cx-imgW/2,y0=cy+Math.max(0,(cellH-(imgH+8))/2);
+        try{d.addImage(f.dataUrl,"JPEG",x,y0,imgW,imgH);}catch(e){}
+        d.setFont("helvetica","bold");d.setFontSize(7.5);d.setTextColor(...INK);
+        const lw=d.getTextWidth(f.folio);d.text(f.folio,cx-lw/2,y0+imgH+5);
+      });
+    });
+  }
+  d.addPage([W,H]);band("Firma",fecha);y=40;
+  T("Firma:",M,y,9,false,G);d.setDrawColor(180);d.line(M+25,y,W-M,y);y+=15;
+  T("Aclaración:",M,y,9,false,G);d.setDrawColor(180);d.line(M+25,y,W-M,y);
 
-      <!-- TRAMOS -->
-      <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Tramos Aptos CCTV</div>
-        ${STATE.tramos.filter(t=>t.cierre&&t.cierre.apto==='SI').map(t=>`<div style="font-size:12px;color:#000;">✅ ${t.tramo} — ${t.cierre.ml} ML</div>`).join('')||'<div style="font-size:12px;color:#000;">Sin tramos</div>'}
-        ${STATE.cierre.tramosManuales?`<div style="font-size:12px;color:#000;">📝 ${STATE.cierre.tramosManuales} (manual) — ${STATE.cierre.mlManual} ML</div>`:''}
-      </div>
-
-      <!-- ACTIVIDADES -->
-      <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Actividades</div>
-        <div style="font-size:12px;color:#000;">Sacos: ${STATE.cierre.sacos}<br>Tapas 60x60: ${tapas60}<br>Tapas 80x80: ${tapas80}<br>Resane: ${STATE.cierre.resane}</div>
-      </div>
-
-      <!-- MÉTRICAS -->
-      <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Métricas</div>
-        <div style="font-size:12px;color:#000;">ML total: ${mlTotal} ML<br>Meta: 140 ML</div>
-      </div>
-
-      <!-- OBSERVACIONES CON 2 SUBCONJUNTOS -->
-      <div style="background:#f0faf0;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">Observaciones</div>
-        <div style="background:#fff8f0;border:2px solid #f59e0b;border-radius:8px;padding:10px;margin-bottom:10px;text-align:center;font-weight:700;color:#f59e0b;">${diagnostico}</div>
-        <div style="border-top:1px dashed #22c55e;margin:10px 0;"></div>
-        <div style="font-size:12px;color:#000;min-height:60px;">${STATE.cierre.obs||'Sin observaciones'}</div>
-      </div>
-
-      <!-- SEPARADOR -->
-      <div style="border-top:2px solid #1a2e1a;margin:10px 0;"></div>
-
-      <!-- BITÁCORA DETALLADA (encabezado único, hitos sin repetirlo) -->
-      <div style="background:#fff;border:1px solid #333;border-radius:8px;padding:12px;">
-        <div style="font-size:10px;font-weight:800;color:#1a2e1a;margin-bottom:6px;text-transform:uppercase;">📋 Bitácora Detallada del Día</div>
-        <pre style="font-size:11px;color:#000;white-space:pre-wrap;font-family:monospace;margin:0;">${STATE.bitacoraInterna||'Sin registros'}</pre>
-      </div>
-
-      <!-- FIRMA -->
-      <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:15px;color:#000;">
-        <div>Firma: ______________________</div>
-        <div>Fecha: ${fecha}</div>
-      </div>
-    </div>
-  `;
-
-  const iframe=document.createElement('iframe');
-  iframe.style.position='fixed';iframe.style.right='0';iframe.style.bottom='0';
-  iframe.style.width='0';iframe.style.height='0';iframe.style.border='0';
-  document.body.appendChild(iframe);
-  const doc=iframe.contentWindow.document;
-  doc.open();
-  doc.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>#_Mtto_Manual</title></head><body>${contenido}</body></html>`);
-  doc.close();
-  iframe.contentWindow.onafterprint=()=>{
-    setTimeout(()=>{
-      document.body.removeChild(iframe);
-      STATE.cerrada=true;
-      guardarEstado();
-      toast('✅ Jornada cerrada');
-      setTimeout(reiniciarApp,2000);
-    },500);
-  };
-  setTimeout(()=>{iframe.contentWindow.focus();iframe.contentWindow.print();},500);
+  const blob=d.output("blob");
+  const nombre="Manual_"+(STATE.brigada||"XX").replace(/\s+/g,"")+"_"+new Date().toISOString().slice(0,10)+".pdf";
+  window.PDF_BLOB=blob;window.PDF_NOMBRE=nombre;
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nombre;document.body.appendChild(a);a.click();a.remove();
+  STATE.cerrada=true;guardarEstado();
+  await idbLimpiarFotos_();
+  toast("✅ Jornada cerrada");
+  setTimeout(reiniciarApp,2000);
+}
+async function compartirPDFWhatsApp(){
+  if(!window.PDF_BLOB){toast("PDF no disponible. Genera el PDF primero.");return;}
+  try{
+    const file=new File([window.PDF_BLOB],window.PDF_NOMBRE,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:window.PDF_NOMBRE,text:"#_Mtto_Manual — Cierre de jornada"});
+      return;
+    }
+  }catch(e){if(e.name==="AbortError")return;}
+  const a=document.createElement("a");a.href=URL.createObjectURL(window.PDF_BLOB);a.download=window.PDF_NOMBRE;a.click();
 }
 
 /* ==================== BITÁCORA COMPLETA ==================== */
@@ -1350,11 +1366,8 @@ function guardarInspector(){
   if(confirm('¿Acepta y cierra?')){
     STATE.cierre.personal=Number(personal);
     if(personal==='0'){
-      STATE.cierre.sacos=0;
-      STATE.cierre.tapas=[];
-      STATE.cierre.resane=0;
-      STATE.cierre.tramosManuales='0';
-      STATE.cierre.mlManual=0;
+      STATE.cierre.sacos=0;STATE.cierre.tapas=[];STATE.cierre.resane=0;
+      STATE.cierre.tramosManuales='0';STATE.cierre.mlManual=0;
     } else {
       STATE.cierre.sacos=Number(document.getElementById('insp-sacos').value)||0;
       STATE.cierre.tapas=tapasInspector;
@@ -1363,28 +1376,24 @@ function guardarInspector(){
       STATE.cierre.mlManual=Number(document.getElementById('insp-ml').value)||0;
     }
     STATE.cierre.obs=document.getElementById('insp-obs').value.trim();
-    if(novedadInspectorActual){
-      STATE.novedades.push({tipo:novedadInspectorActual, regresa:regresaInspectorActual, hora:nowISO()});
-    }
-    STATE.horaInicio=nowISO();
-    STATE.horaFin=nowISO();
-    enviarHitoRemoto('inspectorCierre', {mlManual: STATE.cierre.mlManual});
+    if(novedadInspectorActual){STATE.novedades.push({tipo:novedadInspectorActual,regresa:regresaInspectorActual,hora:nowISO()});}
+    STATE.horaInicio=nowISO();STATE.horaFin=nowISO();
+    enviarHitoRemoto('inspectorCierre',{mlManual:STATE.cierre.mlManual});
     generarPDFCierre();
   }
 }
 
 /* ==================== REINICIAR ==================== */
 function reiniciarApp(){
-  STATE = {
-    brigada:null, contratista:null, barrio:null, modo:null, gps:null,
-    horaInicio:null, horaFin:null, inspector:null,
-    tramos:[], novedades:[], cerrada:false,
-    actividadCount:0, bitacoraInterna:"",
-    cierre:{sacos:0, tapas:[], resane:0, personal:null, obs:'', tramosManuales:'', mlManual:0}
+  STATE={
+    brigada:null,contratista:null,barrio:null,modo:null,gps:null,
+    idTarea:"",tareaNombre:"",tareasDisponibles:[],
+    horaInicio:null,horaFin:null,inspector:null,
+    tramos:[],novedades:[],cerrada:false,actividadCount:0,bitacoraInterna:"",
+    cierre:{sacos:0,tapas:[],resane:0,personal:null,obs:'',tramosManuales:'',mlManual:0}
   };
   tempApto=null;tramoACerrar=null;tempRegresa=null;
-  tapasFormulario=[];tapasInspector=[];
-  formularioConTramos=false;
+  tapasFormulario=[];tapasInspector=[];formularioConTramos=false;
   novedadInspectorActual=null;regresaInspectorActual=null;
   document.getElementById('screen-cierre').classList.remove('active');
   document.getElementById('screen-dashboard').classList.remove('active');
@@ -1395,7 +1404,9 @@ function reiniciarApp(){
   document.getElementById('btn-abrir-jornada').disabled=true;
   document.getElementById('advertencia-inspector').classList.remove('show');
   document.getElementById('btn-confirmar-cierre').disabled=false;
-  document.getElementById('btn-confirmar-cierre').textContent='🖨️ Imprimir PDF y Cerrar';
+  document.getElementById('btn-confirmar-cierre').textContent='🖨️ Generar PDF y Cerrar';
+  ocultarTareasBrigada_();
+  document.getElementById('ap-tarea').innerHTML='<option value="">Selecciona tarea...</option>';
   initGPSApertura();
 }
 
@@ -1407,25 +1418,25 @@ const MODAL_MAP={
 };
 function abrirModal(id){
   document.getElementById(MODAL_MAP[id]).classList.add('active');
-  if(['modal-cierre-tramo','modal-requerimiento'].includes(id)) prefetchUbicacion();
+  if(['modal-cierre-tramo','modal-requerimiento'].includes(id))prefetchUbicacion();
 }
 function cerrarModal(id){document.getElementById(MODAL_MAP[id]).classList.remove('active');}
 
-/* ==================== VERIFICAR CONEXIÓN ==================== */
+/* ==================== CONEXIÓN ==================== */
 function verificarConexion(){
   const offlineEl=document.getElementById('offline-indicator');
   if(!navigator.onLine){offlineEl.style.display='block';}
   else{offlineEl.style.display='none';}
 }
-window.addEventListener('online',()=>{verificarConexion();procesarCola();});
+window.addEventListener('online',()=>{verificarConexion();procesarCola().then(()=>verificarEnviados_());});
 window.addEventListener('offline',verificarConexion);
 
-/* ==================== PWA: SERVICE WORKER ==================== */
+/* ==================== SERVICE WORKER ==================== */
 if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
+  window.addEventListener('load',()=>{
     navigator.serviceWorker.register('service-worker-manual.js')
-      .then(reg => console.log('✅ SW registrado'))
-      .catch(err => console.error('❌ SW:', err));
+      .then(reg=>console.log('✅ SW registrado'))
+      .catch(err=>console.error('❌ SW:',err));
   });
 }
 </script>
